@@ -1,0 +1,37 @@
+<h1>Listing claims</h1>
+
+<table>
+  <tr>
+		<th>ID</th>
+    <th>Date</th>
+    <th>Hospital</th>
+    <th>Doctor</th>
+    <th>Round</th>
+    <th>Duration</th>
+    <th>Start</th>
+    <th>Finish</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @claims.each do |claim| %>
+  <tr>
+	<td><%= claim.id %></td>
+    <td><%= claim.date %></td>
+    <td><%= claim.hospital_id %></td>
+    <td><%= claim.doctor_id %></td>
+    <td><%= claim.round_id %></td>
+    <td><%= claim.duration %></td>
+    <td><%= claim.start %></td>
+    <td><%= claim.finish %></td>
+    <td><%= link_to 'Show', claim %></td>
+    <td><%= link_to 'Edit', edit_claim_path(claim) %></td>
+    <td><%= link_to 'Destroy', claim, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Claim', new_claim_path %>

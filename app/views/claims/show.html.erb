@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Date:</b>
+  <%= @claim.date %>
+</p>
+
+<p>
+  <b>Hospital:</b>
+  <%= @claim.hospital_id %>
+</p>
+
+<p>
+  <b>Doctor:</b>
+  <%= @claim.doctor_id %>
+</p>
+
+<p>
+  <b>Round:</b>
+  <%= @claim.round_id %>
+</p>
+
+<p>
+  <b>Duration:</b>
+  <%= @claim.duration %>
+</p>
+
+<p>
+  <b>Start:</b>
+  <%= @claim.start %>
+</p>
+
+<p>
+  <b>Finish:</b>
+  <%= @claim.finish %>
+</p>
+
+
+<%= link_to 'Edit', edit_claim_path(@claim) %> |
+<%= link_to 'Back', claims_path %>

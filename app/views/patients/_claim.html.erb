@@ -1,0 +1,16 @@
+<span id='claim-<%= claim.hospital_id %>' style="display: none";>
+<%= form_for claim, :html => {:name => 'claim_form_'+claim.id.to_s,:class=>'edit-claim'},:remote=>true do |f| %>
+
+<div class="field">
+	<%= f.label :start %>
+	<%= f.time_select :start %>
+  <%= f.label :duration %>
+	<%= f.number_field :duration %>
+  <%= f.label :claimable %>
+	<%= f.number_field :claimable %>
+	<%= f.submit :update %>
+	
+</div>
+
+<% end %>
+</span>

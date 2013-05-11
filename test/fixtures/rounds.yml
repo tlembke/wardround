@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  doctor_id: 1
+  hospital_id: 1
+  date: 2013-03-25
+  duration: 1
+  claimable: 1
+  start: 2013-03-25 21:47:06
+  finish: 2013-03-25 21:47:06
+
+two:
+  doctor_id: 1
+  hospital_id: 1
+  date: 2013-03-25
+  duration: 1
+  claimable: 1
+  start: 2013-03-25 21:47:06
+  finish: 2013-03-25 21:47:06

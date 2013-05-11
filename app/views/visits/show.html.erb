@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+Visit to <%= @visit.patient.name %> on <%=@visit.date%><p>
+
+<p>
+  <b>Ward:</b>
+	<%= best_in_place @visit.patient, :ward_id, :type => :select, :collection => @visit.patient.ward.hospital.wards.map {|x| [x.id, x.name] } %>
+</p>
+
+<p>
+	<b>Duration:</b>
+  <%= best_in_place @visit, :duration, :type => :input %> 	 
+</p>
+<p>
+	<b>Reason:</b>
+  <%= best_in_place @visit.patient, :reason, :type => :input,:ok_button => 'Save', :cancel_button => 'Cancel' %> 	 
+</p>
+<p>
+	<b>Note:</b>
+  <%= best_in_place @visit.patient, :note, :type => :textarea,:ok_button => 'Save', :cancel_button => 'Cancel' %> 	 
+</p>
+
+<%= link_to 'Discharge', discharge_patient_path(patient,:round_id=>@visit.id),:method=>:post,:remote=>true %>
+<%= link_to 'Edit', edit_visit_path(@visit) %> |
+<%= link_to 'Back', visits_path %>

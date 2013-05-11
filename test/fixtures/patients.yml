@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  ward_id: 1
+  admission: 2013-03-24
+  discharge: 
+
+two:
+  name: MyString
+  ward_id: 1
+  admission: 2013-03-24
+  discharge: 

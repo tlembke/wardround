@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+Round id is <%=@round.id if @round %><p>
+<p>
+  <b>Name:</b>
+  <%= @patient.name %>
+</p>
+<p>
+  <b>MRN:</b>
+  <%= best_in_place @patient, :mrn %>
+</p>
+<p>
+  <b>Status:</b>
+  <%= best_in_place @patient, :status, :type => :select, :collection => [[0,'--'],[1,'Pub'],[2,'Pte'],[3,'DVA'],[4,'WC']] %>
+</p>
+<p>
+  <b>Admission:</b>
+  <%= best_in_place @patient, :admission, :type => :date %>
+</p>
+
+<div id="discharge-<%=@patient.id%>" <%="style='display: none'" unless @patient.discharge%> >
+<p>
+  <b>Discharge:</b>
+	<span id='picker-discharge-<%=@patient.id%>>'>
+  <%= best_in_place @patient, :discharge, :type => :date %>
+	</span>
+</p>
+</div>
+<p>
+  <b><%= @patient.ward.hospital.name %></b>
+	<%= best_in_place @patient, :ward_id, :type => :select, :collection => @patient.ward.hospital.wards.map {|x| [x.id, x.name] } %> <span id='new_ward_link'>  (new)</span>
+	<input type="text" id="new_ward" style='display: none'>
+
+</p>
+<p>
+	<b>Under Us:</b>	 
+  			<%= check_box_tag @patient.id,@patient.id,@patient.under,:class => 'patient-under' %>
+</p>
+<p>
+	<b>Reason:</b>
+  <%= best_in_place @patient, :reason, :type => :input,:ok_button => 'Save', :cancel_button => 'Cancel' %> 	 
+</p>
+<p>
+	<b>Note:</b>
+  <%= best_in_place @patient, :note, :type => :textarea,:ok_button => 'Save', :cancel_button => 'Cancel' %> 	 
+</p>
+<div id='undischarge_button'<%="style='display: none'" unless @patient.discharge%> >
+   <%= button_to "UnDischarge", undischarge_patient_path(@patient),:method=>:post,:remote=>true  %>
+</div>
+<div id='discharge_button' <%="style='display: none'" if @patient.discharge%>>
+   <%= button_to "Discharge", discharge_patient_path(@patient),:method=>:post,:remote=>true  %>
+</div>
+ 
+<%= link_to 'Back', round_path(@round) if @round %>
