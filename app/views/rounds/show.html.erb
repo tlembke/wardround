@@ -1,38 +1,27 @@
-<h1><%=@round.date %> <%= @round.number.ordinalize+' visit' %> (<%= @round.id %>)</h1>
+<h1><%= @round.hospital.name%> <%=@round.date %> <%= @round.number.ordinalize+' visit' %> (<%= @round.id %>)</h1>
 <%= link_to 'New visit on same day', return_round_path(@round) %><p>
-<%= link_to 'Previous', rounds_path(:date=>@round.date-1.day,:round_id=>@round.previous) %>
+<%= link_to 'Previous', rounds_path(:date=>@round.date-1.day,:round_id=>@round.previous,:hospital_id=>@round.hospital_id) %>
 
-<%= link_to 'Next', rounds_path(:date=>@round.date+1.day,:round_id=>@round.next,:order=>'ASC') unless @round.date==Date.today and @round.number==@round.visits%><p>
+<%= link_to 'Next', rounds_path(:date=>@round.date+1.day,:round_id=>@round.next,:order=>'ASC',:hospital_id=>@round.hospital_id) unless @round.date==Date.today and @round.number==@round.visits%><p>
 
-<table>
-
-<% current_hospital=0 %>
-<% @patients.each do |patient| %>
-
-	<% if patient.ward.hospital.id!=current_hospital%>
-	<tr><td colspan=2 valigh='top'><b><%= patient.ward.hospital.name%></b></td>
-<td valign='middle'>
-	<% if patient.ward.hospital.showtime %>
-								<a href="#" onclick="$('#claim-<%=patient.ward.hospital.id%>').toggle('slow');return false;" style="text-decoration: none">Time</a>
+	<% if @round.hospital.showtime %>
+								<a href="#" onclick="$('#claim-<%=@round.hospital.id%>').toggle('slow');return false;" style="text-decoration: none">Time</a>
 								<% end %>
-								</td>
-	<td colspan=5>
-			<%= render :partial => "claim", :object => @claims[patient.ward.hospital.id] if patient.ward.hospital.showtime%>
-			</td>
-			
-		</tr>
-	<% end%>
-	<% current_hospital=patient.ward.hospital.id%>
+								<%= render :partial => "claim", :object => @claims[patient.ward.hospital.id] if @round.hospital.showtime%>
+
+
+<% @patients.each do |patient| %>
+<table>
   <tr>
 		<td>
 
-			<%= check_box_tag @claims[patient.ward.hospital.id].id,patient.id,patient.visited?(@claims[patient.ward.hospital.id].id),:class => 'patient-visit' %>
+			<%= check_box_tag @round.id,patient.id,patient.visited?(@round.id),:class => 'patient-visit' %>
 
 			</td>
     <td>
 	<span <%= "style='font-weight: bold'" if patient.under==1%>><%= link_to patient.name,patient_path(patient,:round_id=>@round.id) %> </span></td>
     <td>
-	<%= collection_select("ward",:id, @wards[current_hospital], :id, :name, {:selected => patient.ward.id}, {:class=>'ward-select',:name=>patient.id}) %>
+	<%= collection_select("ward",:id, @wards[@round.hospital_id], :id, :name, {:selected => patient.ward.id}, {:class=>'ward-select',:name=>patient.id}) %>
 	</td>
 
     <td><%= patient.admission %></td>
@@ -41,7 +30,7 @@
 		<% if patient.discharge %>
 		<%= link_to 'Decrement', decrement_patient_path(patient),:method=>:post,:remote=>true %>
 		<% else %>
-		<%= link_to 'Discharge', discharge_patient_path(patient,:claim_id=>@claims[patient.ward.hospital.id]),:method=>:post,:remote=>true %>
+		<%= link_to 'Discharge', discharge_patient_path(patient,:round_id=>@round.id),:method=>:post,:remote=>true %>
 		<% end %>
 		</td>
 
@@ -52,4 +41,5 @@
 
 <br />
 
-<%= link_to 'New Patient', new_patient_path %>
+<%= link_to 'New Patient', new_patient_path(:hospital_id=>@round.hospital_id) %>
+<%= link_to 'Show All Hospital', rounds_path if Hospital.count>1 %>

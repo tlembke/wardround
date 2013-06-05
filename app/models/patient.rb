@@ -1,18 +1,15 @@
 class Patient < ActiveRecord::Base
-  attr_accessible :admission, :discharge, :name, :ward_id, :reason, :note, :mrn, :status
+  attr_accessible :admission, :discharge, :name, :ward_id, :reason, :note, :mrn, :status, :under
   belongs_to :ward
   has_many :visits
+
   
-  def self.inpatients(date=Date.today)
-    @patients = Patient.joins(:ward => :hospital).order("hospitals.id").find(:all,:conditions=>["admission <=? and (discharge is NULL or discharge=?)",date,date])
-    #@patients=Patient.find(:all, :order =>"wards.hospital")
+  def visit(round)
+    @visit=Visit.find(:all,:conditions=>["patient_id=? and round_id=?",self.id,round])
+    debugger
   end
   
-  def visit(claim)
-    @visit=Visit.find(:all,:conditions=>["patient_id=? and claim_id=?",self.id,claim])
-  end
-  
-  def visited?(claim)
-    Visit.find(:all,:conditions=>["patient_id=? and claim_id=?",self.id,claim]).present?
+  def visited?(round)
+    Visit.find(:all,:conditions=>["patient_id=? and round_id=?",self.id,round]).present?
   end
 end

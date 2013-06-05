@@ -1,0 +1,69 @@
+<div data-role="page" data-theme="a" id='showround'  > 
+     <div data-role="header">
+					<a href='/rounds/' data-ajax= 'false'>Hospitals</a>
+					<h1>Admit</h1>
+     </div> 
+     <div data-role="content">
+	
+	
+<%= form_for(@patient,:html => {'data-ajax' => 'false' }) do |f| %>
+<div data-role="fieldcontain">
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</div>
+<div data-role="fieldcontain">
+	<%= f.label :hospital %>
+  <%= collection_select("hospital",:id, @hospitals, :id, :name) %>
+</div>
+<div data-role="fieldcontain">
+  <%= f.label :ward_id %>
+  <%= f.collection_select(:ward_id,@wards,:id,:name)%> 
+</div>
+<div data-role="fieldcontain">
+	<%= f.label "Under Us" %><br />
+<%= f.select( :under, [["no",0],["yes",1]],{},{"data-role"=>"slider","data-mini"=>"true"}) %>
+</div>
+<div data-role="fieldcontain">
+    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+    <legend>Status:</legend>
+<%= f.radio_button "status","0" %>
+<label for="patient_status_0">--</label>
+<%= f.radio_button "status", "1"%>
+<label for="patient_status_1">Pub</label>
+<%= f.radio_button "status", "2" %>
+<label for="patient_status_2">Pte</label>
+<%= f.radio_button "status", "3" %>
+<label for="patient_status_3">DVA</label>
+<%= f.radio_button "status", "4" %>
+<label for="patient_status_4">WC</label>
+    </fieldset>
+</div>
+<label for="date">Admission:</label>
+
+
+
+
+<div data-role="fieldcontain">
+  <%= f.label :admission %><br />
+<input type="date" name="patient_admission" id="date" value="<%= @patient.admission.to_s(:db) %>"  />
+
+</div>
+<div data-role="fieldcontain">
+  <%= f.label :reason %><br />
+  <%= f.text_field :reason %>
+</div>
+<div data-role="fieldcontain">
+  <%= f.label :note %><br />
+  <%= f.text_area :note %>
+</div>
+
+<div data-role="fieldcontain">
+  <%= f.submit %>
+</div>
+<% end %>
+
+     </div>   
+    <div data-role="footer" data-position="fixed">
+     <h4>WardRoundApp by LemLink</h4>
+    </div> 
+</div>

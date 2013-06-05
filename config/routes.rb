@@ -20,6 +20,7 @@ Wardround::Application.routes.draw do
         post 'undischarge'
         post 'decrement'
         post 'changeward'
+        post 'changestatus'
         post 'under'
       end
     end

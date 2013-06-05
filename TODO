@@ -1,7 +1,8 @@
+Fix rounds so that a round is a visit to a hospital, rather than a visit to all hospitals. Therefore get rid of claims.
 Navigation
-Change 'patients' to rounds as default view
+√ Change 'patients' to rounds as default view
 Pretty up everything
-Public /Private/DVA
+√ Public /Private/DVA
 MRN
 Visit Duration and Item
 

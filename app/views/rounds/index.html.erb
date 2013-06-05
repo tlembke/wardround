@@ -1,55 +1,6 @@
-<h1><%=@round.date.strftime("%A %d-%m-%Y")  %> <%= @round.number.ordinalize+' visit' %> (<%= @round.id %>)</h1>
-<%= link_to 'New visit on same day', return_round_path(@round) %><p>
-<%= link_to 'Previous', rounds_path(:date=>@round.date-1.day,:round_id=>@round.previous) %>
+Select Hospital:<p>
 
-<%= link_to 'Next', rounds_path(:date=>@round.date+1.day,:round_id=>@round.next,:order=>'ASC') unless @round.date==Date.today and @round.number==@round.visits%><p>
-
-<table>
-
-<% current_hospital=0 %>
-<% @patients.each do |patient| %>
-
-	<% if patient.ward.hospital.id!=current_hospital%>
-	<tr><td colspan=2 valigh='top'><b><%= patient.ward.hospital.name%></b></td>
-<td valign='middle'>
-	<% if patient.ward.hospital.showtime %>
-								<a href="#" onclick="$('#claim-<%=patient.ward.hospital.id%>').toggle('slow');return false;" style="text-decoration: none">Time</a>
-								<% end %>
-								</td>
-	<td colspan=5>
-			<%= render :partial => "claim", :object => @claims[patient.ward.hospital.id] if patient.ward.hospital.showtime%>
-			</td>
-			
-		</tr>
-	<% end%>
-	<% current_hospital=patient.ward.hospital.id%>
-  <tr>
-		<td>
-
-			<%= check_box_tag @claims[patient.ward.hospital.id].id,patient.id,patient.visited?(@claims[patient.ward.hospital.id].id),:class => 'patient-visit' %>
-
-			</td>
-    <td>
-	<span <%= "style='font-weight: bold'" if patient.under==1%>><%= link_to patient.name,patient_path(patient,:round_id=>@round.id) %> </span></td>
-    <td>
-	<%= collection_select("ward",:id, @wards[current_hospital], :id, :name, {:selected => patient.ward.id}, {:class=>'ward-select',:name=>patient.id}) %>
-	</td>
-
-    <td><%= patient.admission %></td>
-    <td id='discharge-<%=patient.id %>'><%= patient.discharge %></td>
-		<td id='discharge-command-<%=patient.id %>'>
-		<% if patient.discharge %>
-		<%= link_to 'Decrement', decrement_patient_path(patient),:method=>:post,:remote=>true %>
-		<% else %>
-		<%= link_to 'Discharge', discharge_patient_path(patient,:claim_id=>@claims[patient.ward.hospital.id]),:method=>:post,:remote=>true %>
-		<% end %>
-		</td>
-
-  </tr>
+<% @hospitals.each do |hospital| %>
+<%= link_to hospital.name,rounds_path(:hospital_id=>hospital.id),"data-ajax"=>"false" %><br>
 <% end %>
-</table>
 
-
-<br />
-
-<%= link_to 'New Patient', new_patient_path %>

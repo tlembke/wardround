@@ -1,0 +1,27 @@
+
+<div data-role="page" data-theme="a" id='showround'  > 
+     <div data-role="header">
+					<a href='/rounds/' data-ajax= 'false'>Hospitals</a>
+           <h1><%= @round.hospital.name%> <%=@round.date %></h1>
+     </div> 
+     <div data-role="content">     
+		 <ul data-role="listview" data-inset="true" data-dividertheme="b"> 
+		  <% current_ward="" %>
+			<% @patients.each do |patient| %>
+			 <% if patient.ward.id != current_ward %>
+			 <li data-role="list-divider"><%= patient.ward.name %></li>
+			 <% current_ward=patient.ward.id %>
+			<% end %>
+			<li>
+				<div class='checkBoxLeft'><%= check_box_tag @round.id,patient.id,patient.visited?(@round.id),:class => 'hidden-checkbox'%></div><%= link_to patient.name,patient_path(patient,:round_id=>@round.id),:class=>"detailListText",'data-ajax'=>"false",'data-icon'=>"bars"%></li>
+			<% end %>
+		</ul>
+
+			
+
+     
+     </div>   
+    <div data-role="footer" data-position="fixed">
+     <h4>WardRoundApp by LemLink</h4>
+    </div> 
+</div>

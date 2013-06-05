@@ -36,6 +36,7 @@ class VisitsController < ApplicationController
       format.html # new.html.erb
       format.json { render :json => @visit }
       format.js
+      format.mobile {render :nothing => true}
     end
   end
 
@@ -51,12 +52,12 @@ class VisitsController < ApplicationController
 
     @visit = Visit.new
     @patient=Patient.find(params[:patient_id])
-    @claim=Claim.find(params[:claim_id])
+    @round=Round.find(params[:round_id])
     @visit.patient_id=@patient.id
     @visit.date=Date.today
-    @visit.claim_id=@claim.id
-    @visit.duration=@claim.hospital.duration
-    @visit.item=@claim.hospital.item
+    @visit.round_id=@round.id
+    @visit.duration=@round.hospital.duration
+    @visit.item=@round.hospital.item
     respond_to do |format|
       if @visit.save
         format.html { redirect_to @visit, :notice => 'Visit was successfully created.' }
@@ -99,14 +100,14 @@ class VisitsController < ApplicationController
   
 
   def remove
-    @visit = Visit.where('patient_id=? and claim_id=?',params[:patient_id],params[:claim_id]).first
-    debugger
+    @visit = Visit.where('patient_id=? and round_id=?',params[:patient_id],params[:round_id]).first
     @visit.destroy
 
     respond_to do |format|
       format.html { redirect_to visits_url }
       format.json { head :no_content }
       format.js {render :nothing => true}
+      format.mobile {render :nothing => true}
     end
   end
 end

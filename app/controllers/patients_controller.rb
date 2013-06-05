@@ -44,6 +44,7 @@ class PatientsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @patient }
+      format.mobile
     end
   end
 
@@ -52,8 +53,12 @@ class PatientsController < ApplicationController
   def new
     @patient = Patient.new
     @hospitals=Hospital.find(:all)
-    hospital=@hospitals[0]
-    @wards = Hospital.find(hospital.id).wards
+    @hospital=Hospital.first
+    if params[:hospital_id]
+      @hospital=Hospital.find(params[:hospital_id])
+    end
+    @wards = Hospital.find(@hospital.id).wards
+    @patient.admission=Date.today
     respond_to do |format|
       format.html # new.html.erb
       format.json { render :json => @patient }
@@ -75,6 +80,7 @@ class PatientsController < ApplicationController
 
     respond_to do |format|
       if @patient.save
+        format.mobile { redirect_to @patient}
         format.html { redirect_to @patient, :notice => 'Patient was successfully created.' }
         format.json { render :json => @patient, :status => :created, :location => @patient }
       else
@@ -115,16 +121,16 @@ class PatientsController < ApplicationController
   
   def discharge
       date=Date.today
-      source='patients/dischargepatient'
-      if params[:claim_id].present?
-        @claim=Claim.find(params[:claim_id])
-        date=@claim.date
-        source='patients/discharge'
-      end
+      # source='patients/dischargepatient'
+      # if params[:claim_id].present?
+      #  @claim=Claim.find(params[:claim_id])
+     #  date=@claim.date
+      #  source='patients/discharge'
+      # end
       @patient=Patient.update(params[:id],:discharge=>date)
       respond_to do |format|
         format.html
-        format.js {render :template => source}
+        format.js
       end
   end
   
@@ -151,6 +157,17 @@ class PatientsController < ApplicationController
       respond_to do |format|
         format.html
         format.js {render :nothing => true}
+      end
+      
+  end
+  
+  def changestatus
+      @patient = Patient.find(params[:id])
+      @patient.update_attribute(:status,params[:status])
+      respond_to do |format|
+        format.html
+        format.js {render :nothing => true}
+        format.mobile
       end
       
   end

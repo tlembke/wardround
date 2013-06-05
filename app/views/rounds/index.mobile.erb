@@ -1,0 +1,17 @@
+<div data-role="page" data-theme="a"> 
+     <div data-role="header">
+           <h1>Select Hospital</h1> 
+     </div> 
+     <div data-role="content">     
+           <ul data-role="listview" data-inset="true" data-dividertheme="b"> 
+                 <li data-role="list-divider">Hospitals</li> 
+								<% @hospitals.each do |hospital| %>
+								<li><%= link_to hospital.name,rounds_path(:hospital_id=>hospital.id),"data-ajax"=>"false"  %><span class="ui-li-count"><%= hospital.inpatients.count %></span></li>
+								<% end %>
+           </ul>   
+<%= link_to "Admit New Patient",new_patient_path,"data-ajax"=>"false","data-role"=>"button","data-theme"=>"b" %>     
+     </div>   
+    <div data-role="footer" data-position="fixed">
+     <h4>WardRoundApp by LemLink</h4>
+    </div> 
+</div>

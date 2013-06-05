@@ -1,0 +1,2 @@
+$('#discharge-<%=@patient.id%>').html("<%=@patient.discharge%>");
+$('#discharge-command-<%=@patient.id%>').html("<%= escape_javascript(link_to 'Decrement', decrement_patient_path(@patient),:method=>:post,:remote=>true)%>");

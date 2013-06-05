@@ -7,7 +7,8 @@
  *
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
- *
+
+ *= require jquery.ui.datepicker
  *= require_self
  *= require_tree .
  */
@@ -29,4 +30,37 @@
   padding-right: 1.5em;
   background: url("/assets/red_pen.png") no-repeat right;
   background-color: #CCC;
+}
+.detailListText{
+    margin: 0 0 0 30px;
+}
+
+.checkBoxLeft{
+    position: absolute; 
+    left: 10px; 
+    top: 28%;
+    width: 18px;
+    height: 18px;
+    background: #d9d9d9;
+    border-radius: 3px;  
+}
+
+.hidden-checkbox {
+    display: none;
+}
+
+.not-checked, .checked {
+    background-image: url("/assets/elements.png");
+    background-repeat: no-repeat;
+}
+
+.not-checked {
+    background-position: 18px 0;   
+    background-color:#d9d9d9;
+}
+
+
+.checked {
+    background-position: 0 0;   
+    background-color:#6496bc;    
 }

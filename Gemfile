@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.5'
 
-gem 'ruby-debug19'
+gem 'debugger', group: [:development, :test]
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -23,7 +23,10 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'jquery_mobile_datebox-rails', :git => 'https://github.com/Guidecase/jquery_mobile_datebox-rails.git'
+
+gem 'mobylette'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
