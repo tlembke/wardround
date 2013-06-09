@@ -1,12 +1,12 @@
 <div data-role="page" data-theme="a" id='showround'  > 
      <div data-role="header">
-					<a href='/rounds/' data-ajax= 'false'>Hospitals</a>
+			 <%= link_to 'Cancel', rounds_path,'data-transition'=>'flip','data-icon'=>'delete'%>
 					<h1>Admit</h1>
      </div> 
      <div data-role="content">
 	
 	
-<%= form_for(@patient,:html => {'data-ajax' => 'false' }) do |f| %>
+<%= form_for(@patient) do |f| %>
 <div data-role="fieldcontain">
   <%= f.label :name %><br />
   <%= f.text_field :name %>
@@ -38,16 +38,15 @@
 <label for="patient_status_4">WC</label>
     </fieldset>
 </div>
-<label for="date">Admission:</label>
-
-
-
 
 <div data-role="fieldcontain">
-  <%= f.label :admission %><br />
-<input type="date" name="patient_admission" id="date" value="<%= @patient.admission.to_s(:db) %>"  />
+<label for="patient[admission]">Admission      </label>
+
+<input name="patient[admission]" type="date" data-role="datebox"
+   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(@patient.admission) %>, "showInitialValue": true }'>
 
 </div>
+
 <div data-role="fieldcontain">
   <%= f.label :reason %><br />
   <%= f.text_field :reason %>
@@ -58,7 +57,7 @@
 </div>
 
 <div data-role="fieldcontain">
-  <%= f.submit %>
+  <%= f.submit 'Admit',"data-transition"=>'flip' %>
 </div>
 <% end %>
 

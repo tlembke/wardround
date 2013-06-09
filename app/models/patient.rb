@@ -12,4 +12,5 @@ class Patient < ActiveRecord::Base
   def visited?(round)
     Visit.find(:all,:conditions=>["patient_id=? and round_id=?",self.id,round]).present?
   end
+  
 end

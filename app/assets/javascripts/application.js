@@ -11,7 +11,6 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 
-//= require jquery.ui.datepicker
 //= require best_in_place
 //= require_tree .
 
@@ -21,76 +20,54 @@ jQuery.ajaxSetup({
  'beforeSend': function(xhr) { xhr.setRequestHeader("Accept", "text/javascript") }
  });
 
-	jQuery.extend(jQuery.mobile.datebox.prototype.options, {
-	    'overrideDateFormat': '%d/%m/%Y',
-	    'showInitialValue': "true",
-	});
-
-$(document).ready(function() {
-	// Replace rails submit button with button tags for jquery ui
-	// commented out for jquery mobile
-	// $('input[type="submit"]').each(function() {
-	//	$(this).hide().after('<button>').next().button({
-	//		icons: {
-	//			primary: 'ui-button',
-	//		},
-	//		label: $(this).val()			
-	//	}).click(function(event) {
-	//		event.preventDefault();
-	//		$(this).prev().click();
-	//	});
+	//jQuery.extend(jQuery.mobile.datebox.prototype.options, {
+	//  'overrideDateFormat': '%d/%m/%Y',
+	//  'showInitialValue': "true",
 	// });
 	
-
-
 	
-	// for checkbox in list views in jquerymobile
-	// as per http://jsfiddle.net/Gajotres/ek2QT/
+$('#showround').live('pageinit', function(event) {
+		    $('input[type="checkbox"]').each(function(){
+		        ($(this).is(':checked')) ? $(this).parent().parent().addClass('checked') : $(this).parent().parent().addClass('not-checked');
+		    });
+
+
+		$('.checkBoxLeft').bind('click', function(e) {
+		    if($(this).find('input[type="checkbox"]').is(':checked')){
+		       $(this).removeClass('checked').addClass('not-checked'); 
+		       $(this).find('input[type="checkbox"]').attr('checked' , false);
+		  		$.ajax({
+			 		type: "POST",
+					data: {patient_id: $(this).find('input[type="checkbox"]').attr('value'),round_id: $(this).find('input[type="checkbox"]').attr('name')},
+					url : "/visits/remove",
+		   		})
+		    } else {
+		       $(this).removeClass('not-checked').addClass('checked');             
+		       $(this).find('input[type="checkbox"]').attr('checked' , true);
+				$.ajax({
+			 		type: "POST",
+					data: {patient_id: $(this).find('input[type="checkbox"]').attr('value'),round_id: $(this).find('input[type="checkbox"]').attr('name')},
+					url : "/visits",
+		   		})
+		    }
+		});
+});
+$('#showpatient').live('pageinit', function(event) {
 	
+	// attrchanger
+	$(".attrchanger").change(function(){
+		var name = $(this).attr('data-attr');
+		var value = $(this).val();
+		var dataObj = {};
 
-	    $('input[type="checkbox"]').each(function(){
-	        ($(this).is(':checked')) ? $(this).parent().parent().addClass('checked') : $(this).parent().parent().addClass('not-checked');
-	    });
-
-
-	$('.checkBoxLeft').bind('click', function(e) {
-	    if($(this).find('input[type="checkbox"]').is(':checked')){
-	       $(this).removeClass('checked').addClass('not-checked'); 
-	       $(this).find('input[type="checkbox"]').attr('checked' , false);
-	  		$.ajax({
-		 		type: "POST",
-				data: {patient_id: $(this).find('input[type="checkbox"]').attr('value'),round_id: $(this).find('input[type="checkbox"]').attr('name')},
-				url : "/visits/remove",
-	   		})
-	    } else {
-	       $(this).removeClass('not-checked').addClass('checked');             
-	       $(this).find('input[type="checkbox"]').attr('checked' , true);
-			$.ajax({
-		 		type: "POST",
-				data: {patient_id: $(this).find('input[type="checkbox"]').attr('value'),round_id: $(this).find('input[type="checkbox"]').attr('name')},
-				url : "/visits",
-	   		})
-	    }
-	});
-	
-	// update patient under
-	$('.patient_under').change(function() {
+		dataObj[name]=value;
 		$.ajax({
-			type: "POST",
-			data: {under:$(this).val()},
-			url : "/patients/"+$(this).attr('data-patient')+"/under",
-		})
+			type: "PUT",
+			data: dataObj,
+			url : "/patients/"+$(this).attr('data-patient')
+   		})
+
 	});
-	
-	// update patient status
-	$(".status").change(function(){
-			$.ajax({
-				type: "POST",
-				data: {status:$(this).val()},
-				url : "/patients/"+$(this).attr('data-patient')+"/changestatus",
-	   		})
-	});
-	
 	
 	// discharge
 	$("#discharge").click(function(){
@@ -115,11 +92,78 @@ $(document).ready(function() {
 			url : "/patients/"+$(this).attr('data-patient')+"/changeward",
    		})
 	});
+});
+$(document).ready(function() {
+
+	// Replace rails submit button with button tags for jquery ui
+	// commented out for jquery mobile
+	// $('input[type="submit"]').each(function() {
+	//	$(this).hide().after('<button>').next().button({
+	//		icons: {
+	//			primary: 'ui-button',
+	//		},
+	//		label: $(this).val()			
+	//	}).click(function(event) {
+	//		event.preventDefault();
+	//		$(this).prev().click();
+	//	});
+	// });
 	
+
+
+	
+	// for checkbox in list views in jquerymobile
+	// as per http://jsfiddle.net/Gajotres/ek2QT/
+
+
+	
+/*
+	
+	// attrchanger
+	$(".attrchanger").change(function(){
+		var name = $(this).attr('data-attr');
+		var value = $(this).val();
+		var dataObj = {};
+
+		dataObj[name]=value;
+		$.ajax({
+			type: "PUT",
+			data: dataObj,
+			url : "/patients/"+$(this).attr('data-patient')
+   		})
+
+	});
+	
+	
+	// discharge
+	$("#discharge").click(function(){
+		alert("Discharge");
+		$.ajax({
+	 		type: "POST",
+			url : "/patients/"+$(this).attr('data-patient')+"/discharge",
+   		})
+	});
+	//undischarge
+	$("#undischarge").click(function(){
+		$.ajax({
+	 		type: "POST",
+			url : "/patients/"+$(this).attr('data-patient')+"/undischarge",
+   		})
+	});
+	
+	// change patients wards
+	$("#patient_ward_id").change(function(){
+		$.ajax({
+	 		type: "POST",
+			data: {ward_id:$(this).val()},
+			url : "/patients/"+$(this).attr('data-patient')+"/changeward",
+   		})
+	});
+*/	
 	jQuery(".best_in_place").best_in_place();
 	
-	$.datepicker.setDefaults({ dateFormat: 'dd/mm/y' });
-	$('.datepicker').datepicker();
+	//$.datepicker.setDefaults({ dateFormat: 'dd/mm/y' });
+	//$('.datepicker').datepicker();
 
 
 
@@ -132,6 +176,7 @@ $(document).ready(function() {
 			data :  params
 	     })
 	});
+/*
 	$(".patient-visit").bind('change', function(){
 	 	if (this.checked){
 	  		$.ajax({
@@ -149,8 +194,8 @@ $(document).ready(function() {
 		}
 	});
 
-		
-
+*/		
+/*
 	// change text on button when claim is submitted
 	$(".edit-claim").bind("ajax:beforeSend", function(event,xhr,status){
 	  var submit = $(this).find(":submit").attr('value','Saving!');
@@ -160,7 +205,7 @@ $(document).ready(function() {
 	  var submit = $(this).find(":submit").attr('value','Update');
 	});
 	
-
+*/
 //		$("#new_ward_link").click(function() {
 //		  alert("Handler for .click() called.");
 //		  $("#new_ward_link").toggle();

@@ -1,10 +1,34 @@
 
 <div data-role="page" data-theme="a" id='showround'  > 
      <div data-role="header">
-					<a href='/rounds/' data-ajax= 'false'>Hospitals</a>
-           <h1><%= @round.hospital.name%> <%=@round.date %></h1>
+				<%=link_to 'Hospitals',rounds_path, 'data-transition'=> 'slide','data-icon'=>"back",'data-direction'=>'reverse'%>
+           <h1><%= @round.hospital.name%></h1>
+
      </div> 
-     <div data-role="content">     
+     <div data-role="content">
+			<div style="text-align:center">
+				<div data-role="controlgroup" data-type="horizontal">
+				<%= link_to 'Previous', rounds_path(:date=>@round.date-1.day,:round_id=>@round.previous,:hospital_id=>@round.hospital_id),'data-role'=>'button','data-icon'=>"arrow-l", 'data-iconpos'=>"notext",'data-mini'=>"true",'data-transition'=>'slide','data-direction'=>'left'%>
+				<button data-mini='true'><%= @round.date %> (<%= @round.number.ordinalize%>)</button>
+
+				
+					<a href="#popupDialog" data-rel="popup" data-position-to="window" data-role="button" data-mini="true" data-icon='plus' data-iconpos='notext' data-transition="pop">Dialog</a>
+					
+
+<%= link_to 'Next', rounds_path(:date=>@round.date+1.day,:round_id=>@round.next,:order=>'ASC',:hospital_id=>@round.hospital_id),'data-role'=>'button','data-iconpos'=>"notext",'data-icon'=>"arrow-r",'data-mini'=>"true",'data-transition'=>'slide','data-direction'=>'right' unless @round.date==Date.today and @round.number==@round.visits%>
+</div>
+			</div>
+			<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
+				<div data-role="header" data-theme="a" class="ui-corner-top">
+					<h1>Return visit on same day?</h1>
+				</div>
+				<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+					<h3 class="ui-title">Are you sure you want add another visit on this day?</h3>
+					 <%= link_to "Cancel", round_path(@round),'data-role'=>'button','data-icon'=>'plus','data-inline'=>"true",'data-theme'=>'b','data-mini'=>'true' %>  
+					<%= link_to "Revisit", return_round_path(@round),'data-role'=>'button','data-icon'=>'plus','data-inline'=>"true",'data-theme'=>'b','data-mini'=>'true' %>
+					 
+				</div>
+			</div>
 		 <ul data-role="listview" data-inset="true" data-dividertheme="b"> 
 		  <% current_ward="" %>
 			<% @patients.each do |patient| %>
@@ -13,10 +37,10 @@
 			 <% current_ward=patient.ward.id %>
 			<% end %>
 			<li>
-				<div class='checkBoxLeft'><%= check_box_tag @round.id,patient.id,patient.visited?(@round.id),:class => 'hidden-checkbox'%></div><%= link_to patient.name,patient_path(patient,:round_id=>@round.id),:class=>"detailListText",'data-ajax'=>"false",'data-icon'=>"bars"%></li>
+				<div class='checkBoxLeft'><%= check_box_tag @round.id,patient.id,patient.visited?(@round.id),:class => 'hidden-checkbox'%></div><%= link_to patient.name,patient_path(patient,:round_id=>@round.id),:class=>"detailListText","data-transition"=>"slide",'data-icon'=>"bars"%></li>
 			<% end %>
 		</ul>
-
+<%= link_to "Admit New Patient",new_patient_path("hospital_id"=>@round.hospital.id),"data-role"=>"button","data-theme"=>"b",'data-transition'=>'flip' %> 
 			
 
      

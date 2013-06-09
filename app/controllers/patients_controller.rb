@@ -41,6 +41,9 @@ class PatientsController < ApplicationController
     if params[:round_id] and params[:round_id]!='0'
       @round=Round.find(params[:round_id])
     end
+    if request.xhr?
+      request.format = "mobile"
+    end
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @patient }
@@ -59,6 +62,9 @@ class PatientsController < ApplicationController
     end
     @wards = Hospital.find(@hospital.id).wards
     @patient.admission=Date.today
+    if request.xhr?
+      request.format = "mobile"
+    end
     respond_to do |format|
       format.html # new.html.erb
       format.json { render :json => @patient }
@@ -77,10 +83,12 @@ class PatientsController < ApplicationController
   # POST /patients.json
   def create
     @patient = Patient.new(params[:patient])
-
+    if request.xhr?
+      request.format = "mobile"
+    end
     respond_to do |format|
       if @patient.save
-        format.mobile { redirect_to @patient}
+        format.mobile { redirect_to rounds_path(:hospital_id=>@patient.ward.hospital.id)}
         format.html { redirect_to @patient, :notice => 'Patient was successfully created.' }
         format.json { render :json => @patient, :status => :created, :location => @patient }
       else
@@ -94,15 +102,17 @@ class PatientsController < ApplicationController
   # PUT /patients/1.json
   def update
     @patient = Patient.find(params[:id])
-    params[:patient][:admission]=Date.strptime(params[:patient][:admission],'%d/%m/%y') if params[:patient][:admission]
-    params[:patient][:discharge]=Date.strptime(params[:patient][:discharge],'%d/%m/%y') if params[:patient][:discharge]
+    params[:patient][:admission]=Date.strptime(params[:patient][:admission],'%d/%m/%Y') if params[:patient][:admission]
+    params[:patient][:discharge]=Date.strptime(params[:patient][:discharge],'%d/%m/%Y') if params[:patient][:discharge]
     respond_to do |format|
       if @patient.update_attributes(params[:patient])
         format.html { redirect_to @patient, :notice => 'Patient was successfully updated.' }
         format.json { respond_with_bip(@patient) }
+        format.js {render :nothing => true}
       else
         format.html { render :action => "edit" }
         format.json { render :json => @patient.errors, :status => :unprocessable_entity }
+        format.js {render :nothing => true}
       end
     end
   end

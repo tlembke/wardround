@@ -18,7 +18,7 @@ class Round < ActiveRecord::Base
   end
   
   def inpatients
-     @patients = Patient.joins(:ward => :hospital).where("hospital_id=?",self.hospital_id).find(:all,:conditions=>["admission <=? and (discharge is NULL or discharge=?)",self.date,self.date])
+     @patients = Patient.joins(:ward => :hospital).where("hospital_id=?",self.hospital_id).find(:all,:conditions=>["admission <=? and (discharge is NULL or discharge=?)",self.date,self.date],:order=>"ward_id ASC")
   end
   
   

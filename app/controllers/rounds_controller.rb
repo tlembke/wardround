@@ -2,6 +2,8 @@
 class RoundsController < ApplicationController
   # GET /rounds
   # GET /rounds.json
+  
+
   def index
     if params[:id] and params[:id]!='0'
       @round=Round.find(params[:id])
@@ -23,6 +25,9 @@ class RoundsController < ApplicationController
     #@hospitals.each do |hospital|
       #@claims[hospital.id]=Claim.find_or_create_by_round_id_and_hospital_id(:round_id=>@round.id,:hospital_id=> hospital.id)
     #end
+    if request.xhr?
+      request.format = "mobile"
+    end
     respond_to do |format|
       format.html
       format.mobile
@@ -57,13 +62,17 @@ class RoundsController < ApplicationController
       @wards[hospital.id]=Ward.where('hospital_id=?',hospital.id)
     end
     @hospital=Hospital.all
-   
+    if request.xhr?
+      request.format = "mobile"
+    end
 
     respond_to do |format|
+
       format.html # index.html.erb
       format.mobile
       format.json { render :json => @patients }
     end
+ 
 
   end
 
@@ -130,8 +139,8 @@ class RoundsController < ApplicationController
   def return
      @round = Round.find(params[:id])
      @round = @round.return
-     respond_to do |format|
-        format.html { redirect_to :controller=>:rounds,:action=>:show,:id=>@round.id}
-     end 
+
+     redirect_to :controller=>:rounds,:action=>:show,:id=>@round.id
+
   end
 end

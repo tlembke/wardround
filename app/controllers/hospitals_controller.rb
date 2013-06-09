@@ -1,5 +1,5 @@
-
 class HospitalsController < ApplicationController
+  layout "plain"
   # GET /hospitals
   # GET /hospitals.json
   def index

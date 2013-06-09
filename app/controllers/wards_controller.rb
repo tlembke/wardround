@@ -1,5 +1,6 @@
 
 class WardsController < ApplicationController
+  layout "plain"
   # GET /wards
   # GET /wards.json
   def index
