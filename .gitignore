@@ -14,3 +14,7 @@ log/development.log
 tmp/pids/server.pid
 
 .InterarchyMirrorCacheData/Current Cache.1
+
+tmp/
+
+*.sqlite3
