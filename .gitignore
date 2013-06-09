@@ -12,3 +12,5 @@ log/development.log
 log/development.log
 
 tmp/pids/server.pid
+
+.InterarchyMirrorCacheData/Current Cache.1
