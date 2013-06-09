@@ -1,21 +1,21 @@
 
 <div data-role="page" data-theme="a" id='showround'  > 
      <div data-role="header">
-				<%=link_to 'Hospitals',rounds_path, 'data-transition'=> 'slide','data-icon'=>"back",'data-direction'=>'reverse'%>
+				<%=link_to 'Hospitals',rounds_path, 'data-transition'=> 'slide','data-icon'=>"back",'data-direction'=>'left'%>
            <h1><%= @round.hospital.name%></h1>
 
      </div> 
      <div data-role="content">
 			<div style="text-align:center">
 				<div data-role="controlgroup" data-type="horizontal">
-				<%= link_to 'Previous', rounds_path(:date=>@round.date-1.day,:round_id=>@round.previous,:hospital_id=>@round.hospital_id),'data-role'=>'button','data-icon'=>"arrow-l", 'data-iconpos'=>"notext",'data-mini'=>"true",'data-transition'=>'slide','data-direction'=>'left'%>
+				<%= link_to 'Previous', rounds_path(:date=>@round.date-1.day,:round_id=>@round.previous,:hospital_id=>@round.hospital_id),'data-role'=>'button','data-icon'=>"arrow-l", 'data-iconpos'=>"notext",'data-mini'=>"true",'data-transition'=>'slide','data-direction'=>'reverse'%>
 				<button data-mini='true'><%= @round.date %> (<%= @round.number.ordinalize%>)</button>
 
 				
 					<a href="#popupDialog" data-rel="popup" data-position-to="window" data-role="button" data-mini="true" data-icon='plus' data-iconpos='notext' data-transition="pop">Dialog</a>
 					
 
-<%= link_to 'Next', rounds_path(:date=>@round.date+1.day,:round_id=>@round.next,:order=>'ASC',:hospital_id=>@round.hospital_id),'data-role'=>'button','data-iconpos'=>"notext",'data-icon'=>"arrow-r",'data-mini'=>"true",'data-transition'=>'slide','data-direction'=>'right' unless @round.date==Date.today and @round.number==@round.visits%>
+<%= link_to 'Next', rounds_path(:date=>@round.date+1.day,:round_id=>@round.next,:order=>'ASC',:hospital_id=>@round.hospital_id),'data-role'=>'button','data-iconpos'=>"notext",'data-icon'=>"arrow-r",'data-mini'=>"true",'data-transition'=>'slide' unless @round.date==Date.today and @round.number==@round.visits%>
 </div>
 			</div>
 			<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">

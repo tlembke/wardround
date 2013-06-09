@@ -13,11 +13,11 @@
 </div>
 <div data-role="fieldcontain">
 	<%= f.label :hospital %>
-  <%= collection_select("hospital",:id, @hospitals, :id, :name) %>
+  <%= collection_select("hospital",:id, @hospitals, :id, :name,{},{"data-native-menu"=>"false","data-mini"=>"true"})%>
 </div>
 <div data-role="fieldcontain">
   <%= f.label :ward_id %>
-  <%= f.collection_select(:ward_id,@wards,:id,:name)%> 
+  <%= f.collection_select(:ward_id,@wards,:id,:name,{},{"data-native-menu"=>"false","data-mini"=>"true"})%> 
 </div>
 <div data-role="fieldcontain">
 	<%= f.label "Under Us" %><br />
