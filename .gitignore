@@ -18,3 +18,5 @@ tmp/pids/server.pid
 tmp/
 
 *.sqlite3
+
+log/production.log
