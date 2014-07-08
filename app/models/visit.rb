@@ -3,4 +3,14 @@ class Visit < ActiveRecord::Base
   belongs_to :doctor
   belongs_to :ward
   belongs_to :patient
+  
+  def self.code(patient,theDate)
+    
+    @visits=Visit.find(:all,:conditions=>["patient_id=? and date=?",patient,theDate.strftime('%Y-%m-%d')])
+    code=" "
+    if @visits.count>0
+      code=@visits.count
+    end
+
+  end
 end

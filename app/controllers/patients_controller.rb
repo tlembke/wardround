@@ -38,16 +38,30 @@ class PatientsController < ApplicationController
   # GET /patients/1.json
   def show
     @patient = Patient.find(params[:id])
+    if params[:theDate]
+        @theDate=Date.strptime(params[:theDate],'%d/%m/%y')
+    end
+    @round_id=0
     if params[:round_id] and params[:round_id]!='0'
       @round=Round.find(params[:round_id])
+      @round_id=@round.id
+    end
+    if params[:method]=="delete"
+        @patient.destroy
+        if @theDate
+            redirect_to hospitals_path("theDate"=>@theDate) and return
+        else
+            redirect_to rounds_path(:id=>@round.id) and return
+        end
+      
     end
     if request.xhr?
       request.format = "mobile"
     end
     respond_to do |format|
-      format.html # show.html.erb
+      format.html 
       format.json { render :json => @patient }
-      format.mobile
+      format.mobile 
     end
   end
 
@@ -124,7 +138,10 @@ class PatientsController < ApplicationController
     @patient.destroy
 
     respond_to do |format|
-      format.html { redirect_to patients_url }
+      format.html { if @theDate
+                      render :controller=> "hospitals/show"
+                    end
+                  }
       format.json { head :no_content }
     end
   end

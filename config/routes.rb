@@ -3,6 +3,8 @@ Wardround::Application.routes.draw do
   root :to => "rounds#index"
   
   resources :claims
+  
+  resources :reports
 
   resources :rounds do
       member do
@@ -31,6 +33,9 @@ Wardround::Application.routes.draw do
   resources :hospitals do
     collection do
       get 'wards_by_hospital'
+    end
+    member do
+      get 'report'
     end
   end
   

@@ -18,7 +18,7 @@ class Round < ActiveRecord::Base
   end
   
   def inpatients
-     @patients = Patient.joins(:ward => :hospital).where("hospital_id=?",self.hospital_id).find(:all,:conditions=>["admission <=? and (discharge is NULL or discharge=?)",self.date,self.date],:order=>"ward_id ASC")
+     @patients = Patient.joins(:ward => :hospital).where("hospital_id=?",self.hospital_id).find(:all,:conditions=>["admission <=? and (discharge is NULL or discharge>=?)",self.date,self.date],:order=>"ward_id ASC")
   end
   
   
@@ -56,9 +56,12 @@ class Round < ActiveRecord::Base
   
   def next
       round=0
+
       if self.visits>self.number
         @round=Round.where('date=? and number=?',self.date,self.number+1)[0]
-        round=@round.id
+        if @round 
+          round=@round.id
+        end
       end
       return round
   end

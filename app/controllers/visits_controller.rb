@@ -53,8 +53,9 @@ class VisitsController < ApplicationController
     @visit = Visit.new
     @patient=Patient.find(params[:patient_id])
     @round=Round.find(params[:round_id])
+
     @visit.patient_id=@patient.id
-    @visit.date=Date.today
+    @visit.date=@round.date
     @visit.round_id=@round.id
     @visit.duration=@round.hospital.duration
     @visit.item=@round.hospital.item
@@ -74,7 +75,7 @@ class VisitsController < ApplicationController
   # PUT /visits/1.json
   def update
     @visit = Visit.find(params[:id])
-
+ 
     respond_to do |format|
       if @visit.update_attributes(params[:visit])
         format.html { redirect_to @visit, :notice => 'Visit was successfully updated.' }

@@ -1,11 +1,15 @@
 
-<div data-role="page" data-theme="a" id='showpatient' > 
+<div data-role="page" data-theme="a" id='showpatient'style='max-width: 600px;' > 
      <div data-role="header">
 	 <%= link_to 'Back', round_path(@round),'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' if @round %>
-	 <%= link_to 'Back', rounds_path(:hospital_id=>@patient.ward.hospital.id),'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' unless @round %>
+	 <%= link_to 'Back', hospitals_path(:theDate=>@theDate),'data-icon'=>'back',"data-ajax"=>"false" unless @round %>
            <h1><%= @patient.name%></h1>
      </div> 
      <div data-role="content">
+			<div data-role="fieldcontain">
+			  <label><b>Name:  </b></label>
+			  <%= best_in_place @patient, :name %>
+			</div>
 			<div data-role="fieldcontain">
 			  <label><b>MRN:  </b></label>
 			  <%= best_in_place @patient, :mrn %>
@@ -72,7 +76,24 @@
 				<b>Note:</b>
 			  <%= best_in_place @patient, :note, :type => :textarea,:ok_button => 'Save', :cancel_button => 'Cancel' %> 	 
 			  </div>
-
+					
+					<div id='delete_button'>
+							
+				
+						<a href="#deleteConfirm" style="background: red" data-rel="popup" data-role="button" data-icon="delete" data-transition="pop">Delete</a>
+					</div>
+					<div data-role="popup" id="deleteConfirm" data-overlay-theme="a" data-theme="c" class="ui-corner-all">
+					            <div data-role="header" data-theme="a" class="ui-corner-top">
+					                <h1>Delete Page?</h1>
+					            </div>
+					            <div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+					                <h3 class="ui-title">Are you sure you want to delete this patient?</h3>
+					                <p> All data for this patient will be lost.This action cannot be undone.</p>
+					                <a href="#" data-role="button" data-rel="back" data-theme="c" data-ajax='false'>Cancel</a> 
+									<%= link_to "Delete",patient_path(@patient,"method"=>"delete","theDate"=>@theDate,"round_id"=>@round_id),'data-role'=>'button','data-icon'=>"delete","style"=>"background: red","data-ajax"=>"false"%>  
+					
+								</div>
+					</div>
 
 	
      

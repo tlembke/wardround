@@ -69,6 +69,8 @@ class ClaimsController < ApplicationController
       end
     end
   end
+  
+
 
   # DELETE /claims/1
   # DELETE /claims/1.json
