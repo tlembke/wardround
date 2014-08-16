@@ -1,5 +1,5 @@
 
-<div data-role="page" data-theme="b" id='showpatient'style='max-width: 600px;' > 
+<div data-role="page" data-theme="b" id='showpatient' style='max-width: 600px;' > 
      <div data-role="header">
 	 <%= link_to 'Back', round_path(@round),'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' if @round %>
 	 <%= link_to 'Back', hospitals_path(:theDate=>@theDate),'data-icon'=>'back',"data-ajax"=>"false" unless @round %>

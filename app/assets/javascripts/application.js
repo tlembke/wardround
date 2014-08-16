@@ -114,6 +114,19 @@ $('#showpatient').live('pageinit', function(event) {
    		})
 	});
 });
+
+
+$('#newpatient').live('pageinit', function(event) {
+	$("#hospital_id").change(function(){ 
+		var id = $(this).children(":selected").val();
+		var params = 'hospital_id=' + id;
+    	$.ajax({
+        	url : "/hospitals/wards_by_hospital",
+			data :  params
+     	})
+	});
+});	
+	
 $(document).ready(function() {
 
 	// Replace rails submit button with button tags for jquery ui
@@ -189,14 +202,7 @@ $(document).ready(function() {
 
 
 
- 	$("#hospital_id").change(function(){
-    	var id = $(this).children(":selected").val();
-    	var params = 'hospital_id=' + id;
-	    $.ajax({
-	        url : "/hospitals/wards_by_hospital",
-			data :  params
-	     })
-	});
+
 /*
 	$(".patient-visit").bind('change', function(){
 	 	if (this.checked){

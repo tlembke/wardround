@@ -1,4 +1,4 @@
-<div data-role="page" data-theme="b" id='showround'  > 
+<div data-role="page" data-theme="b" id='newpatient'  > 
      <div data-role="header">
 
 			 <%= link_to 'Cancel', :back,'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' %>
@@ -7,65 +7,65 @@
      <div data-role="content">
 	
 	
-<%= form_for(@patient) do |f| %>
-<%= hidden_field_tag 'round_id', @round.id if @round  %>
-<div data-role="fieldcontain">
-  <%= f.label :name %><br />
-  <%= f.text_field :name %>
-</div>
-<div data-role="fieldcontain" <%= " style='visibility:hidden'" if @round%>>
-	<%= f.label :hospital %><br />
-  <%= collection_select("hospital",:id, @hospitals, :id, :name,{},{"data-native-menu"=>"false","data-mini"=>"true","data-role"=>"select"})%>
-</div>
-<div data-role="fieldcontain">
-  <%= f.label :ward_id %><br />
-  <%= f.collection_select(:ward_id,@wards,:id,:name,{},{"data-native-menu"=>"false","data-mini"=>"true","data-role"=>"select"})%> 
-</div>
-<div data-role="fieldcontain">
-	<%= f.label "Under Us" %><br />
-	<%= f.select( :under, [["no",0],["yes",1]],{},{"data-role"=>"slider","data-mini"=>"true"}) %>
-</div>
-<div data-role="fieldcontain">
-	<%= f.label "Charge?" %><br />
-	<%= f.select( :charge, [["no",0],["yes",1]],{},{"data-role"=>"slider","data-mini"=>"true"}) %>
-</div>
-<div data-role="fieldcontain">
-    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-    <legend>Status:</legend>
-<%= f.radio_button "status","0" %>
-<label for="patient_status_0">--</label>
-<%= f.radio_button "status", "1"%>
-<label for="patient_status_1">Pub</label>
-<%= f.radio_button "status", "2" %>
-<label for="patient_status_2">Pte</label>
-<%= f.radio_button "status", "3" %>
-<label for="patient_status_3">DVA</label>
-<%= f.radio_button "status", "4" %>
-<label for="patient_status_4">WC</label>
-    </fieldset>
-</div>
+		<%= form_for(@patient) do |f| %>
+		<%= hidden_field_tag 'round_id', @round.id if @round  %>
+		<div data-role="fieldcontain">
+		  <%= f.label :name %><br />
+		  <%= f.text_field :name %>
+		</div>
+		<div data-role="fieldcontain" <%= " style='visibility:hidden'" if @round%>>
+			<%= f.label :hospital %><br />
+		  <%= collection_select("hospital",:id, @hospitals, :id, :name,{},{"data-native-menu"=>"false","data-mini"=>"true","data-role"=>"select"})%>
+		</div>
+		<div data-role="fieldcontain">
+		  <%= f.label :ward_id %><br />
+		  <%= f.collection_select(:ward_id,@wards,:id,:name,{},{"data-native-menu"=>"false","data-mini"=>"true","data-role"=>"select"})%> 
+		</div>
+		<div data-role="fieldcontain">
+			<%= f.label "Under Us" %><br />
+			<%= f.select( :under, [["no",0],["yes",1]],{},{"data-role"=>"slider","data-mini"=>"true"}) %>
+		</div>
+		<div data-role="fieldcontain">
+			<%= f.label "Charge?" %><br />
+			<%= f.select( :charge, [["no",0],["yes",1]],{},{"data-role"=>"slider","data-mini"=>"true"}) %>
+		</div>
+		<div data-role="fieldcontain">
+		    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+		    <legend>Status:</legend>
+		<%= f.radio_button "status","0" %>
+		<label for="patient_status_0">--</label>
+		<%= f.radio_button "status", "1"%>
+		<label for="patient_status_1">Pub</label>
+		<%= f.radio_button "status", "2" %>
+		<label for="patient_status_2">Pte</label>
+		<%= f.radio_button "status", "3" %>
+		<label for="patient_status_3">DVA</label>
+		<%= f.radio_button "status", "4" %>
+		<label for="patient_status_4">WC</label>
+		    </fieldset>
+		</div>
 
-<div data-role="fieldcontain">
-<label for="patient[admission]">Admission      </label>
+		<div data-role="fieldcontain">
+		<label for="patient[admission]">Admission      </label>
 
-<input name="patient[admission]" type="date" data-role="datebox"
-   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(@patient.admission) %>, "showInitialValue": true }'>
+		<input name="patient[admission]" type="date" data-role="datebox"
+		   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(@patient.admission) %>, "showInitialValue": true }'>
 
-</div>
+		</div>
 
-<div data-role="fieldcontain">
-  <%= f.label :reason %><br />
-  <%= f.text_field :reason %>
-</div>
-<div data-role="fieldcontain">
-  <%= f.label :note %><br />
-  <%= f.text_area :note %>
-</div>
+		<div data-role="fieldcontain">
+		  <%= f.label :reason %><br />
+		  <%= f.text_field :reason %>
+		</div>
+		<div data-role="fieldcontain">
+		  <%= f.label :note %><br />
+		  <%= f.text_area :note %>
+		</div>
 
-<div data-role="fieldcontain">
-  <%= f.submit 'Admit',"data-transition"=>'flip',"data-theme"=>"b" %>
-</div>
-<% end %>
+		<div data-role="fieldcontain">
+		  <%= f.submit 'Admit',"data-transition"=>'flip',"data-theme"=>"b" %>
+		</div>
+		<% end %>
 
      </div>   
     <div data-role="footer" data-position="fixed">
