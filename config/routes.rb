@@ -1,5 +1,11 @@
 Wardround::Application.routes.draw do
   
+ 
+  
+  # replace devise_for :users with:
+  devise_for :users,  :controllers => { :registrations => "users/registrations" }
+  
+
   root :to => "rounds#index"
   
   resources :claims
@@ -15,6 +21,8 @@ Wardround::Application.routes.draw do
   resources :visits do
       collection do
         post 'remove'
+        post 'charge'
+        post 'uncharge'
       end
     end
 

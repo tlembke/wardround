@@ -14,7 +14,10 @@
 //= require best_in_place
 //= require_tree .
 
-
+$(document).ajaxSend(function(e, xhr, options) {
+  var token = $("meta[name='csrf-token']").attr("content");
+  xhr.setRequestHeader("X-CSRF-Token", token);
+});
 
 jQuery.ajaxSetup({
  'beforeSend': function(xhr) { xhr.setRequestHeader("Accept", "text/javascript") }
@@ -24,8 +27,8 @@ jQuery.ajaxSetup({
 	//  'overrideDateFormat': '%d/%m/%Y',
 	//  'showInitialValue': "true",
 	// });
-	
-	
+
+
 $('#showround').live('pageinit', function(event) {
 		    $('input[type="checkbox"]').each(function(){
 		        ($(this).is(':checked')) ? $(this).parent().parent().addClass('checked') : $(this).parent().parent().addClass('not-checked');
@@ -53,7 +56,25 @@ $('#showround').live('pageinit', function(event) {
 		});
 });
 $('#showpatient').live('pageinit', function(event) {
-	
+
+		
+			$('input[type="checkbox"]').bind('click', function(e) {
+
+			    if($(this).is(':checked')){
+			  		$.ajax({
+				 		type: "POST",
+						data: {patient_id: $(this).attr('value'),round_id: $(this).attr('name')},
+						url : "/visits/charge",
+			   		})
+			    } else {
+					$.ajax({
+				 		type: "POST",
+						data: {patient_id: $(this).attr('value'),round_id: $(this).attr('name')},
+						url : "/visits/uncharge",
+			   		})
+			    }
+			});
+		
 	// attrchanger
 	$(".attrchanger").change(function(){
 		var name = $(this).attr('data-attr');
@@ -68,7 +89,7 @@ $('#showpatient').live('pageinit', function(event) {
    		})
 
 	});
-	
+
 	// discharge
 	$("#discharge").click(function(){
 		$.ajax({
@@ -83,7 +104,7 @@ $('#showpatient').live('pageinit', function(event) {
 			url : "/patients/"+$(this).attr('data-patient')+"/undischarge",
    		})
 	});
-	
+
 	// change patients wards
 	$("#patient_ward_id").change(function(){
 		$.ajax({
@@ -108,15 +129,15 @@ $(document).ready(function() {
 	//		$(this).prev().click();
 	//	});
 	// });
-	
 
 
-	
+
+
 	// for checkbox in list views in jquerymobile
 	// as per http://jsfiddle.net/Gajotres/ek2QT/
 
 
-	
+
 /*
 	
 	// attrchanger
@@ -161,13 +182,13 @@ $(document).ready(function() {
 	});
 */	
 	jQuery(".best_in_place").best_in_place();
-	
+
 	//$.datepicker.setDefaults({ dateFormat: 'dd/mm/y' });
 	//$('.datepicker').datepicker();
 
 
 
-	
+
  	$("#hospital_id").change(function(){
     	var id = $(this).children(":selected").val();
     	var params = 'hospital_id=' + id;
@@ -211,7 +232,7 @@ $(document).ready(function() {
 //		  $("#new_ward_link").toggle();
 //		  $("#new_ward").toggle();
 //		});
-		
+
 
 //	$('#new_ward').blur(function() {
 //	  alert(this.value);
@@ -219,12 +240,10 @@ $(document).ready(function() {
 //	  $("#new_ward").toggle();
 //	
 //	});
-	
 
-	
+
+
 
 
 
 })
-
-

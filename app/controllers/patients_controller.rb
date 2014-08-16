@@ -1,5 +1,6 @@
 
 class PatientsController < ApplicationController
+
   # default display
   # shows all current inpatients
   # GET /patients
@@ -74,8 +75,13 @@ class PatientsController < ApplicationController
     if params[:hospital_id]
       @hospital=Hospital.find(params[:hospital_id])
     end
-    @wards = Hospital.find(@hospital.id).wards
     @patient.admission=Date.today
+    if params[:round_id]
+      @round=Round.find(params[:round_id])
+      @patient.admission=@round.date
+    end
+    @wards = Hospital.find(@hospital.id).wards
+
     if request.xhr?
       request.format = "mobile"
     end
@@ -91,6 +97,9 @@ class PatientsController < ApplicationController
     hospital=@hospitals[0]
     @wards = Hospital.find(hospital.id).wards
     @patient = Patient.find(params[:id])
+    if params[:round_id]
+      @round=Round.find(params[:round_id])
+    end
   end
 
   # POST /patients
@@ -102,7 +111,13 @@ class PatientsController < ApplicationController
     end
     respond_to do |format|
       if @patient.save
-        format.mobile { redirect_to rounds_path(:hospital_id=>@patient.ward.hospital.id)}
+        format.mobile { 
+          if(params[:round_id])
+            redirect_to rounds_path(:id=>params[:round_id])
+          else
+            redirect_to rounds_path
+          end
+        }
         format.html { redirect_to @patient, :notice => 'Patient was successfully created.' }
         format.json { render :json => @patient, :status => :created, :location => @patient }
       else
@@ -207,6 +222,30 @@ class PatientsController < ApplicationController
       @patient.under=0
     end
     @patient.update_attribute(:under,@patient.under)
+    respond_to do |format|
+      format.html
+      format.js {render :nothing => true}
+    end
+  end
+  
+  def charge
+    @patient = Patient.find(params[:id])
+
+    @patient.charge=params[:charge]
+
+    @patient.update_attribute(:charge,@patient.charge)
+    respond_to do |format|
+      format.html
+      format.js {render :nothing => true}
+    end
+  end
+  
+  def uncharge
+    @patient = Patient.find(params[:id])
+
+    @patient.charge=params[:charge]
+
+    @patient.update_attribute(:charge,@patient.charge)
     respond_to do |format|
       format.html
       format.js {render :nothing => true}

@@ -1,4 +1,4 @@
-<div data-role="page" data-theme="a" > 
+<div data-role="page" data-theme="b" > 
 	<div data-role="header">
 
 <h1>
@@ -13,11 +13,6 @@
 <%= render(:partial => "hospital",:collection=> @hospitals, :locals=>{theDate: @theDate,startDate: @startDate, periodSpan: @periodSpan, endDate: @endDate})%>
 </table>
 </div>
+<%= render partial: "shared/footer" %>
 
-
-
-
-<div data-role="footer" data-position="fixed">
- <h4>WardRoundApp by LemLink</h4>
-</div>
 </div>

@@ -1,5 +1,5 @@
 class Patient < ActiveRecord::Base
-  attr_accessible :admission, :discharge, :name, :ward_id, :reason, :note, :mrn, :status, :under
+  attr_accessible :admission, :discharge, :name, :ward_id, :reason, :note, :mrn, :status, :under, :charge
   belongs_to :ward
   has_many :visits
 
@@ -10,6 +10,10 @@ class Patient < ActiveRecord::Base
   
   def visited?(round)
     Visit.find(:all,:conditions=>["patient_id=? and round_id=?",self.id,round]).present?
+  end
+  
+  def charged?(round)
+    Visit.find(:all,:conditions=>["patient_id=? and round_id=? and item>0",self.id,round]).present?
   end
   
 
@@ -25,11 +29,11 @@ class Patient < ActiveRecord::Base
       end
       wardStr=wardStr+ "ward_id=0)"
       firstDay=theDate.at_beginning_of_month
-      if period='week'
+      if period=='week'
         firstDay=theDate.at_beginning_of_week
       end
       lastDay=theDate.at_end_of_month
-      if period='week'
+      if period=='week'
         lastDay=theDate.at_end_of_week
       end
       #Patient.find(:all,:conditions=>["admission>? and ?",Date.parse(year.to_s+"-"+month.to_s+"-01").strftime("%Y-%m-%d"),wardStr])

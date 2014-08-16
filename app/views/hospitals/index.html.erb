@@ -4,7 +4,9 @@
 <%= link_to " < "+(@theDate-1.month).strftime("%B"), hospitals_path(:month=>(@theDate-1.month).month,:year=>(@theDate-1.month).year) %>  <%= link_to (@theDate+1.month).strftime("%B")+" > ", hospitals_path(:month=>(@theDate+1.month).month,:year=>(@theDate+1.month).year) %>
 <p>
 
-<%= render(:partial => "hospital",:collection=> @hospitals, :locals=>{theDate: @theDate})%>
+	<table border=1>
+	<%= render(:partial => "hospital",:collection=> @hospitals, :locals=>{theDate: @theDate,startDate: @startDate, periodSpan: @periodSpan, endDate: @endDate})%>
+	</table>
 
 
 

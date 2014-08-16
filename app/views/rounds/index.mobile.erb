@@ -1,18 +1,19 @@
-<div data-role="page" data-theme="a" > 
+<div data-role="page" data-theme="b"
+<
+< style='max-width: 600px;'> 
      <div data-role="header">
            <h1>Ward Round</h1> 
      </div> 
      <div data-role="content">     
-           <ul data-role="listview" data-inset="true" data-dividertheme="b"> 
+           <ul data-role="listview" data-inset="true" data-dividertheme="a"> 
                  <li data-role="list-divider">Hospitals</li> 
 								<% @hospitals.each do |hospital| %>
 								<li><%= link_to hospital.name,rounds_path(:hospital_id=>hospital.id), "data-transition"=> "slide" %><span class="ui-li-count"><%= hospital.inpatients.count %></span></li>
 								<% end %>
            </ul>   
-<%= link_to "Admit New Patient",new_patient_path,"data-role"=>"button","data-theme"=>"b","data-transition"=>'flip' %> 
+<%= link_to "Admit New Patient",new_patient_path,"data-role"=>"button","data-theme"=>"b","data-ajax"=>'false',"data-transition"=> "slide" %> 
 <%= link_to "Report", hospitals_path,"data-role"=>"button","data-theme"=>"b","data-ajax"=>"false"%>    
      </div>   
-    <div data-role="footer" data-position="fixed">
-     <h4>WardRoundApp by LemLink</h4>
-    </div> 
+
+<%= render partial: "shared/footer" %>
 </div>

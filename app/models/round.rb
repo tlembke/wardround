@@ -22,7 +22,7 @@ class Round < ActiveRecord::Base
   end
   
   
-  def self.ondate(date,order="DESC",hospital)
+  def self.ondate(date,order="DESC",hospital,current_user)
       @round=Round.where('date=? AND hospital_id=?',date,hospital).order("created_at "+order)[0]
       if @round.blank?
         @round=Round.new 
@@ -33,6 +33,8 @@ class Round < ActiveRecord::Base
         elsif Hospital.count==1
           @round.hospital_id=Hospital.first.id
         end
+        @user = current_user
+        @round.doctor_id=@user.id
         @round.save
       end
 

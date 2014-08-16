@@ -1,8 +1,11 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.5'
+gem 'yaml_db'
+gem 'devise'
+gem 'cancan'
+gem 'debugger','1.6.8'
 
-gem 'debugger', group: [:development, :test]
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -10,7 +13,7 @@ gem 'debugger', group: [:development, :test]
 gem 'sqlite3'
 
 gem 'json'
-
+    
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

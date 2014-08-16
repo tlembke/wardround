@@ -1,7 +1,12 @@
 class HospitalsController < ApplicationController
-  layout "plain"
+
+
+
+
   # GET /hospitals
   # GET /hospitals.json
+  
+ 
 
   def index
     @hospitals = Hospital.all
@@ -23,6 +28,14 @@ class HospitalsController < ApplicationController
       @prevDate=@startDate-1.week
       @nextDate=@startDate+1.week
       @periodSpan=7
+    elsif request_device?(:ipad)
+      @period='fortnight'
+      @device='ipad'
+      @startDate=@theDate.at_beginning_of_week
+      @endDate=(@startDate+1.week).at_end_of_week
+      @prevDate=@startDate-2.weeks
+      @nextDate=@startDate+2.weeks
+      @periodSpan=14
     else
         @period='month'
         @startDate=@theDate.at_beginning_of_month
@@ -103,6 +116,7 @@ class HospitalsController < ApplicationController
 
     respond_to do |format|
       if @hospital.update_attributes(params[:hospital])
+        format.mobile { redirect_to @hospital, :notice => 'Hospital was successfully updated.' }
         format.html { redirect_to @hospital, :notice => 'Hospital was successfully updated.' }
         format.json { head :no_content }
       else
@@ -133,7 +147,7 @@ class HospitalsController < ApplicationController
     else
       @wards = []
     end
-    
+
     respond_to do |format|
       format.html 
       format.js
