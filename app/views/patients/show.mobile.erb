@@ -18,7 +18,7 @@
 				<label for="patient_admission">Admission      </label>
 
 				<input name="patient[admission]" class='attrchanger' data-attr='patient[admission]' data-patient='<%=@patient.id %>' type="date" data-role="datebox"
-				   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(@patient.admission) %>, "showInitialValue": true , "calControlGroup":true}'>
+				   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(@patient.admission) %>, "showInitialValue": true , "useFocus":true,"calControlGroup":true}'>
 
 				</div>
 
@@ -31,7 +31,7 @@
 						<span id='picker-discharge-<%=@patient.id%>>'>
 
 							<input name="patient[discharge]" class='attrchanger' data-attr='patient[discharge]' data-patient='<%=@patient.id %>' type="date" data-role="datebox"
-							   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(@patient.discharge) %>, "showInitialValue": true }'>
+							   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(@patient.discharge) %>, "showInitialValue": true,"useFocus":true,"calControlGroup":true}'>
 
 						<div id='undischarge_button'<%="style='display: none'" unless @patient.discharge%> >
 						 <button id='undischarge' data-mini='true' data-patient='<%=@patient.id%>'>UnDischarge</button>
