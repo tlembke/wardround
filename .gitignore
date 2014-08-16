@@ -20,3 +20,5 @@ tmp/
 *.sqlite3
 
 log/production.log
+
+.DS_Store
