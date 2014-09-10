@@ -10,14 +10,15 @@ class HospitalsController < ApplicationController
 
   def index
     @hospitals = Hospital.all
-    
+
     # get date - use current month as default
     if params[:theDate]
       @theDate=Date.strptime(params[:theDate],'%d/%m/%y')
     else
       @theDate= Date.today
     end
-    if params[:handover]
+    
+    if params[:handover] and params[:handover]!="false"
       @period='day'
       @startDate=@theDate
       @endDate=@theDate
