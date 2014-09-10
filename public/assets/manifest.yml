@@ -17,9 +17,8 @@ ui-icons_4b8e0b_256x240.png: ui-icons_4b8e0b_256x240-d8db80c0ff7a78711ea61be9668
 ui-icons_a83300_256x240.png: ui-icons_a83300_256x240-5bf2da882f6c6a0e749a2b66679221a9.png
 ui-icons_cccccc_256x240.png: ui-icons_cccccc_256x240-2d98620affee941feccfb7618e0e07d7.png
 ui-icons_ffffff_256x240.png: ui-icons_ffffff_256x240-137cb0aa462803bedd003a09a6313fd1.png
-application.js: application-da3641e7d7a3cdc407f5a2550b16c1f2.js
-application.css: application-9c495954864886c00eff99989a6a47b6.css
-best_in_place.js: best_in_place-d9421ce8ecc71c9530f63dd8ded9e56a.js
+application.js: application-606c4346a43fce7ccd27c649ea9b8179.js
+application.css: application-08a28411f68b7b50b9e32ba01fd937fe.css
 jquery-ui/animated-overlay.gif: jquery-ui/animated-overlay-691b2d4343303de8d214ad5395fd895d.gif
 jquery-ui/ui-bg_flat_0_aaaaaa_40x100.png: jquery-ui/ui-bg_flat_0_aaaaaa_40x100-a1eb3e0764573ed4b261ca742ed96ac3.png
 jquery-ui/ui-bg_flat_75_ffffff_40x100.png: jquery-ui/ui-bg_flat_75_ffffff_40x100-841636c8f8d33987bb8d2f31e8ef92ca.png
