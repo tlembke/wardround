@@ -1,6 +1,4 @@
-<div data-role="page" data-theme="b"
-<
-< style='max-width: 600px;'> 
+<div data-role="page" data-theme="b" style='max-width: 600px;'> 
      <div data-role="header">
            <h1>Ward Round</h1> 
      </div> 
@@ -12,7 +10,8 @@
 								<% end %>
            </ul>   
 <%= link_to "Admit New Patient",new_patient_path,"data-role"=>"button","data-theme"=>"b","data-ajax"=>'false',"data-transition"=> "slide" %> 
-<%= link_to "Report", hospitals_path,"data-role"=>"button","data-theme"=>"b","data-ajax"=>"false"%>    
+<%= link_to "Report", hospitals_path,"data-role"=>"button","data-theme"=>"b","data-ajax"=>"false"%>   
+<%= link_to "Handover", hospitals_path(:handover=>true),"data-role"=>"button","data-theme"=>"b","data-ajax"=>"false"%>   
      </div>   
 
 <%= render partial: "shared/footer" %>

@@ -46,4 +46,4 @@ gem 'mobylette'
 # To use debugger
 # gem 'ruby-debug'
 
-gem "best_in_place", :git=>'https://github.com/bernat/best_in_place/'
+gem "best_in_place", github: 'bernat/best_in_place' 

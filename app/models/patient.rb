@@ -16,6 +16,12 @@ class Patient < ActiveRecord::Base
     Visit.find(:all,:conditions=>["patient_id=? and round_id=? and item>0",self.id,round]).present?
   end
   
+  def otherHospitals
+      Hospital.find(:all,:conditions=>["id!=? ",self.ward.hospital.id])
+  end
+  
+
+  
 
   def self.inThisMonth(month,year)
       Patient.find(:all,:conditions=>["admission>?",Date.parse(year.to_s+"-"+month.to_s+"-01").strftime("%Y-%m-%d")])

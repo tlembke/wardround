@@ -35,6 +35,7 @@ Wardround::Application.routes.draw do
         post 'changeward'
         post 'changestatus'
         post 'under'
+        post 'transfer'
       end
     end
   
@@ -44,6 +45,7 @@ Wardround::Application.routes.draw do
     end
     member do
       get 'report'
+      get 'handover'
     end
   end
   

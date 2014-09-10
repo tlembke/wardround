@@ -17,32 +17,43 @@ class HospitalsController < ApplicationController
     else
       @theDate= Date.today
     end
-
-
-    
-    if request_device?(:iphone)
-      @period='week'
-      @device='iphone'
-      @startDate=@theDate.at_beginning_of_week
-      @endDate=@startDate.at_end_of_week
-      @prevDate=@startDate-1.week
-      @nextDate=@startDate+1.week
-      @periodSpan=7
-    elsif request_device?(:ipad)
-      @period='fortnight'
-      @device='ipad'
-      @startDate=@theDate.at_beginning_of_week
-      @endDate=(@startDate+1.week).at_end_of_week
-      @prevDate=@startDate-2.weeks
-      @nextDate=@startDate+2.weeks
-      @periodSpan=14
+    if params[:handover]
+      @period='day'
+      @startDate=@theDate
+      @endDate=@theDate
+      @prevDate=@theDate-1.day
+      @nextDate=@theDate+1.day
+      @periodSpan=1
+      @handover=true;
+      
     else
+      @handover=false;
+    
+      if request_device?(:iphone)
+        @period='week'
+        @device='iphone'
+        @startDate=@theDate.at_beginning_of_week
+        @endDate=@startDate.at_end_of_week
+        @prevDate=@startDate-1.week
+        @nextDate=@startDate+1.week
+        @periodSpan=7
+        
+      elsif request_device?(:ipad)
+        @period='fortnight'
+        @device='ipad'
+        @startDate=@theDate.at_beginning_of_week
+        @endDate=(@startDate+1.week).at_end_of_week
+        @prevDate=@startDate-2.weeks
+        @nextDate=@startDate+2.weeks
+        @periodSpan=14
+      else
         @period='month'
         @startDate=@theDate.at_beginning_of_month
         @endDate=@theDate.at_end_of_month
         @prevDate=@theDate-1.month
         @nextDate=@theDate+1.month
         @periodSpan=@endDate.day
+      end
     end
 
    
@@ -171,6 +182,19 @@ class HospitalsController < ApplicationController
     @theDate=Date.parse(@year.to_s+"-"+@month.to_s+"-01")
     # get patients who were in hospital during that month
     @patients=Patient.inHospitalThisMonth(params[:id],@month,@year)
+  end
+  
+  def handover
+    @hospitals = Hospital.all
+      @theDate= Date.today
+
+
+
+   
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render :json => @hospitals }
+    end
   end
   
 end

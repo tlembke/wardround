@@ -12,6 +12,12 @@
  *= require_self
  *= require_tree .
  */
+
+.ui-input-datebox {
+	position: relative;
+	z-index: 100000;
+}
+
 .best_in_place {
   padding: .1m;
   cursor: hand;
