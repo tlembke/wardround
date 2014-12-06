@@ -10,9 +10,14 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-
-//= require best_in_place
 //= require_tree .
+
+
+$(document).ajaxSend(function(e, xhr, options) {
+  var token = $("meta[name='csrf-token']").attr("content");
+  xhr.setRequestHeader("X-CSRF-Token", token);
+});
+
 
 
 
@@ -24,8 +29,8 @@ jQuery.ajaxSetup({
 	//  'overrideDateFormat': '%d/%m/%Y',
 	//  'showInitialValue': "true",
 	// });
-	
-	
+
+
 $('#showround').live('pageinit', function(event) {
 		    $('input[type="checkbox"]').each(function(){
 		        ($(this).is(':checked')) ? $(this).parent().parent().addClass('checked') : $(this).parent().parent().addClass('not-checked');
@@ -53,7 +58,25 @@ $('#showround').live('pageinit', function(event) {
 		});
 });
 $('#showpatient').live('pageinit', function(event) {
-	
+
+		
+			$('input[type="checkbox"]').bind('click', function(e) {
+
+			    if($(this).is(':checked')){
+			  		$.ajax({
+				 		type: "POST",
+						data: {patient_id: $(this).attr('value'),round_id: $(this).attr('name')},
+						url : "/visits/charge",
+			   		})
+			    } else {
+					$.ajax({
+				 		type: "POST",
+						data: {patient_id: $(this).attr('value'),round_id: $(this).attr('name')},
+						url : "/visits/uncharge",
+			   		})
+			    }
+			});
+		
 	// attrchanger
 	$(".attrchanger").change(function(){
 		var name = $(this).attr('data-attr');
@@ -68,7 +91,7 @@ $('#showpatient').live('pageinit', function(event) {
    		})
 
 	});
-	
+
 	// discharge
 	$("#discharge").click(function(){
 		$.ajax({
@@ -83,7 +106,7 @@ $('#showpatient').live('pageinit', function(event) {
 			url : "/patients/"+$(this).attr('data-patient')+"/undischarge",
    		})
 	});
-	
+
 	// change patients wards
 	$("#patient_ward_id").change(function(){
 		$.ajax({
@@ -93,138 +116,22 @@ $('#showpatient').live('pageinit', function(event) {
    		})
 	});
 });
-$(document).ready(function() {
-
-	// Replace rails submit button with button tags for jquery ui
-	// commented out for jquery mobile
-	// $('input[type="submit"]').each(function() {
-	//	$(this).hide().after('<button>').next().button({
-	//		icons: {
-	//			primary: 'ui-button',
-	//		},
-	//		label: $(this).val()			
-	//	}).click(function(event) {
-	//		event.preventDefault();
-	//		$(this).prev().click();
-	//	});
-	// });
-	
 
 
-	
-	// for checkbox in list views in jquerymobile
-	// as per http://jsfiddle.net/Gajotres/ek2QT/
-
-
-	
-/*
-	
-	// attrchanger
-	$(".attrchanger").change(function(){
-		var name = $(this).attr('data-attr');
-		var value = $(this).val();
-		var dataObj = {};
-
-		dataObj[name]=value;
-		$.ajax({
-			type: "PUT",
-			data: dataObj,
-			url : "/patients/"+$(this).attr('data-patient')
-   		})
-
-	});
-	
-	
-	// discharge
-	$("#discharge").click(function(){
-		alert("Discharge");
-		$.ajax({
-	 		type: "POST",
-			url : "/patients/"+$(this).attr('data-patient')+"/discharge",
-   		})
-	});
-	//undischarge
-	$("#undischarge").click(function(){
-		$.ajax({
-	 		type: "POST",
-			url : "/patients/"+$(this).attr('data-patient')+"/undischarge",
-   		})
-	});
-	
-	// change patients wards
-	$("#patient_ward_id").change(function(){
-		$.ajax({
-	 		type: "POST",
-			data: {ward_id:$(this).val()},
-			url : "/patients/"+$(this).attr('data-patient')+"/changeward",
-   		})
-	});
-*/	
-	jQuery(".best_in_place").best_in_place();
-	
-	//$.datepicker.setDefaults({ dateFormat: 'dd/mm/y' });
-	//$('.datepicker').datepicker();
-
-
-
-	
- 	$("#hospital_id").change(function(){
-    	var id = $(this).children(":selected").val();
-    	var params = 'hospital_id=' + id;
-	    $.ajax({
-	        url : "/hospitals/wards_by_hospital",
+$('#newpatient').live('pageinit', function(event) {
+	$("#hospital_id").change(function(){ 
+		var id = $(this).children(":selected").val();
+		var params = 'hospital_id=' + id;
+    	$.ajax({
+        	url : "/hospitals/wards_by_hospital",
 			data :  params
-	     })
+     	})
 	});
-/*
-	$(".patient-visit").bind('change', function(){
-	 	if (this.checked){
-	  		$.ajax({
-		 		type: "POST",
-				data: {patient_id: this.value,round_id: this.name},
-				url : "/visits",
- 	   		})
-	 	}
-		else{
-			$.ajax({
-		 		type: "POST",
-				data: {patient_id: this.value,round_id: this.name},
-				url : "/visits/remove",
- 	   		})
-		}
-	});
+});	
 
-*/		
-/*
-	// change text on button when claim is submitted
-	$(".edit-claim").bind("ajax:beforeSend", function(event,xhr,status){
-	  var submit = $(this).find(":submit").attr('value','Saving!');
-
-	});
-	$(".edit-claim").bind("ajax:complete", function(event,xhr,status){
-	  var submit = $(this).find(":submit").attr('value','Update');
-	});
-	
-*/
-//		$("#new_ward_link").click(function() {
-//		  alert("Handler for .click() called.");
-//		  $("#new_ward_link").toggle();
-//		  $("#new_ward").toggle();
-//		});
-		
-
-//	$('#new_ward').blur(function() {
-//	  alert(this.value);
-//	  $("#new_ward_link").toggle();
-//	  $("#new_ward").toggle();
-//	
-//	});
-	
-
-	
-
-
-
-})
+$(document).ready(function() {
+  /* Activating Best In Place */
+  jQuery(".best_in_place").best_in_place();
+});
 
 

@@ -1,6 +1,10 @@
-Select Hospital:<p>
+Round at:<p>
 
 <% @hospitals.each do |hospital| %>
 <%= link_to hospital.name,rounds_path(:hospital_id=>hospital.id),"data-ajax"=>"false" %><br>
 <% end %>
+
+or 
+
+<%= link_to "Report", hospitals_path,"data-ajax"=>"false"%>
 

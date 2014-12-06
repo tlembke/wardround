@@ -18,11 +18,11 @@ class Round < ActiveRecord::Base
   end
   
   def inpatients
-     @patients = Patient.joins(:ward => :hospital).where("hospital_id=?",self.hospital_id).find(:all,:conditions=>["admission <=? and (discharge is NULL or discharge=?)",self.date,self.date],:order=>"ward_id ASC")
+     @patients = Patient.joins(:ward => :hospital).where("hospital_id=?",self.hospital_id).find(:all,:conditions=>["admission <=? and (discharge is NULL or discharge>=?)",self.date,self.date],:order=>"ward_id ASC")
   end
   
   
-  def self.ondate(date,order="DESC",hospital)
+  def self.ondate(date,order="DESC",hospital,current_user)
       @round=Round.where('date=? AND hospital_id=?',date,hospital).order("created_at "+order)[0]
       if @round.blank?
         @round=Round.new 
@@ -33,6 +33,8 @@ class Round < ActiveRecord::Base
         elsif Hospital.count==1
           @round.hospital_id=Hospital.first.id
         end
+        @user = current_user
+        @round.doctor_id=@user.id
         @round.save
       end
 
@@ -56,9 +58,12 @@ class Round < ActiveRecord::Base
   
   def next
       round=0
+
       if self.visits>self.number
         @round=Round.where('date=? and number=?',self.date,self.number+1)[0]
-        round=@round.id
+        if @round 
+          round=@round.id
+        end
       end
       return round
   end

@@ -1,0 +1,10 @@
+<div data-role="footer" >
+	<% if current_user %>
+<font size=-2><%= current_user.name %></font>
+<%= form_tag("/users/sign_out", method: "delete",'data-ajax'=>'false') do %>
+
+  <%= submit_tag("Sign Out","class"=>"ui-btn-right") %>
+<% end %>
+<% end %>
+<h4>WardRoundApp by LemLink</h4>
+</div>

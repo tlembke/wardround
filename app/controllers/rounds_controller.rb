@@ -14,7 +14,7 @@ class RoundsController < ApplicationController
         date=Date.strptime(params[:date],"%d/%m/%y") if params[:date]
         order="DESC"
         order = params[:order] if params[:order]
-        @round=Round.ondate(date,order,params[:hospital_id])
+        @round=Round.ondate(date,order,params[:hospital_id],current_user)
     end
     if @round
         redirect_to :action => "show", :id => @round.id
@@ -54,6 +54,7 @@ class RoundsController < ApplicationController
         order = params[:order] if params[:order]
         @round=Round.ondate(date,order)
     end
+
     @patients = @round.inpatients
     #@patients=Patient.find(:all)
     @hospitals=Hospital.find(:all)
@@ -92,11 +93,15 @@ class RoundsController < ApplicationController
     @round = Round.find(params[:id])
   end
 
+
+  
+  
+
   # POST /rounds
   # POST /rounds.json
   def create
     @round = Round.new(params[:round])
-
+    @round.doctor_id=current_user.id
     respond_to do |format|
       if @round.save
         format.html { redirect_to @round, :notice => 'Round was successfully created.' }

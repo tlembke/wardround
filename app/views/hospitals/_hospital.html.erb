@@ -1,0 +1,57 @@
+<tr>
+<td colspan=6>
+<b><%= hospital.name %></b>
+</td>
+<% if periodSpan>1 %>
+
+<% thisDate = startDate%>
+<% for i in 1..periodSpan %>
+	
+	<td><%= thisDate.strftime("%a")%></td>
+	<% thisDate= thisDate+1.day %>
+
+<% end %>
+<% end %>
+</tr>
+
+
+		<tr>
+			<td>Patient</td>
+			<td>Ward</td>
+			<td>Admitted</td>
+			<% if periodSpan==1 %>
+				<td>Under Us</td>
+				<td>Reason</td>
+				<td>Note</td>
+			<% else %>
+				<td>Discharged</td>
+				<% thisDate = startDate%>
+				<% for i in 1..periodSpan %>
+					
+					<td><%= link_to thisDate.day,rounds_path(:date=>thisDate,:hospital_id=>hospital.id) %></td>
+					<% thisDate= thisDate+1.day %>
+				<% end %>
+			<% end %>
+		</tr>
+	<% hospital.patients(startDate,endDate).each do |patient| %>
+	<tr>
+		<td><%= link_to patient.name,patient_path(patient,"theDate"=>theDate) %></td>
+		<td><%= patient.ward.name %></td>
+		<td><%= patient.admission %></td>
+		<% if periodSpan==1 %>
+			<td><%= patient.under %></td>
+			<td><%= patient.reason %></td>
+			<td><%= patient.note %></td>
+		<% else %>
+			<td><%= patient.discharge %></td>
+			<% thisDate = startDate %>
+			<% for i in 1..periodSpan %>
+				<td <%="style='background:black';" unless (patient.discharge==NIL or thisDate <= patient.discharge) and patient.admission<=thisDate %>><%= Visit.code(patient.id,thisDate) %></td>
+				<% thisDate = thisDate+1.day %>
+			<% end %>
+		<% end %>
+	</tr>
+	<% end %>
+
+<p>
+	

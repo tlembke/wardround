@@ -1,5 +1,6 @@
 
 class PatientsController < ApplicationController
+
   # default display
   # shows all current inpatients
   # GET /patients
@@ -38,16 +39,45 @@ class PatientsController < ApplicationController
   # GET /patients/1.json
   def show
     @patient = Patient.find(params[:id])
+    # best_in_place placeholder is unreliable
+    if @patient.reason=="" or @patient.reason== nil
+      @patient.reason="---"
+    end
+    if @patient.note=="" or @patient.note== nil
+      @patient.note="---"
+    end
+    if @patient.mrn=="" or @patient.mrn== nil
+      @patient.mrn="---"
+    end
+    if params[:theDate]
+        @theDate=Date.strptime(params[:theDate],'%d/%m/%y')
+    end
+    @handover=false
+    if params[:handover]
+      @handover=params[:handover]
+    end
+    @round_id=0
     if params[:round_id] and params[:round_id]!='0'
       @round=Round.find(params[:round_id])
+      @round_id=@round.id
+    end
+    
+    if params[:method]=="delete"
+        @patient.destroy
+        if @theDate
+            redirect_to hospitals_path("theDate"=>@theDate) and return
+        else
+            redirect_to rounds_path(:id=>@round.id) and return
+        end
+      
     end
     if request.xhr?
       request.format = "mobile"
     end
     respond_to do |format|
-      format.html # show.html.erb
+      format.html 
       format.json { render :json => @patient }
-      format.mobile
+      format.mobile 
     end
   end
 
@@ -60,8 +90,13 @@ class PatientsController < ApplicationController
     if params[:hospital_id]
       @hospital=Hospital.find(params[:hospital_id])
     end
-    @wards = Hospital.find(@hospital.id).wards
     @patient.admission=Date.today
+    if params[:round_id]
+      @round=Round.find(params[:round_id])
+      @patient.admission=@round.date
+    end
+    @wards = Hospital.find(@hospital.id).wards
+
     if request.xhr?
       request.format = "mobile"
     end
@@ -77,6 +112,9 @@ class PatientsController < ApplicationController
     hospital=@hospitals[0]
     @wards = Hospital.find(hospital.id).wards
     @patient = Patient.find(params[:id])
+    if params[:round_id]
+      @round=Round.find(params[:round_id])
+    end
   end
 
   # POST /patients
@@ -88,7 +126,13 @@ class PatientsController < ApplicationController
     end
     respond_to do |format|
       if @patient.save
-        format.mobile { redirect_to rounds_path(:hospital_id=>@patient.ward.hospital.id)}
+        format.mobile { 
+          if(params[:round_id])
+            redirect_to rounds_path(:id=>params[:round_id])
+          else
+            redirect_to rounds_path
+          end
+        }
         format.html { redirect_to @patient, :notice => 'Patient was successfully created.' }
         format.json { render :json => @patient, :status => :created, :location => @patient }
       else
@@ -124,7 +168,10 @@ class PatientsController < ApplicationController
     @patient.destroy
 
     respond_to do |format|
-      format.html { redirect_to patients_url }
+      format.html { if @theDate
+                      render :controller=> "hospitals/show"
+                    end
+                  }
       format.json { head :no_content }
     end
   end
@@ -142,6 +189,43 @@ class PatientsController < ApplicationController
         format.html
         format.js
       end
+  end
+  
+  def transfer
+      @patient = Patient.find(params[:id])
+      @newHospital=Hospital.find(params[:hospital])
+      @patient=Patient.update(params[:id],:discharge=>params[:transfer_date])
+      @patient.note=@patient.note+"\rTransferred to "+ @newHospital.name
+      @patient=Patient.update(params[:id],:note=>@patient.note)
+
+      
+      @newPatient=Patient.new
+      # dup doesn't work in Rail 3.2.5
+      
+      @newPatient.name=@patient.name
+      @newPatient.note=@patient.note+"\rTransferred from "+ @patient.ward.hospital.name
+      @newPatient.reason=@patient.reason
+      @newPatient.under=@patient.under
+      @newPatient.status=@patient.status
+      @newPatient.charge=@patient.charge
+      @newPatient.mrn=nil
+      @patient.note=@patient.note+"\rTransferred to "+ @newHospital.name
+      
+      
+      @newPatient.admission=params[:transfer_date]
+      @newPatient.ward_id=params[:ward_id]
+      @newPatient.discharge=nil
+      
+      @patient.update_attributes(params[:patient])
+      @newPatient.save
+      
+      respond_to do |format|
+        format.html { redirect_to @newPatient, :notice => 'Patient was successfully transferred.' }
+        format.mobile { redirect_to @newPatient, :notice => 'Patient was successfully transferred.' }
+        format.js
+      end
+      
+
   end
   
   def undischarge
@@ -195,5 +279,31 @@ class PatientsController < ApplicationController
       format.js {render :nothing => true}
     end
   end
+  
+  def charge
+    @patient = Patient.find(params[:id])
+
+    @patient.charge=params[:charge]
+
+    @patient.update_attribute(:charge,@patient.charge)
+    respond_to do |format|
+      format.html
+      format.js {render :nothing => true}
+    end
+  end
+  
+  def uncharge
+    @patient = Patient.find(params[:id])
+
+    @patient.charge=params[:charge]
+
+    @patient.update_attribute(:charge,@patient.charge)
+    respond_to do |format|
+      format.html
+      format.js {render :nothing => true}
+    end
+  end
+  
+
 
 end

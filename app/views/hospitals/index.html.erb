@@ -1,23 +1,13 @@
-<h1>Listing hospitals</h1>
+<%=@theDate.strftime("%B")+", "+@theDate.strftime("%Y")%>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<p>
+<%= link_to " < "+(@theDate-1.month).strftime("%B"), hospitals_path(:month=>(@theDate-1.month).month,:year=>(@theDate-1.month).year) %>  <%= link_to (@theDate+1.month).strftime("%B")+" > ", hospitals_path(:month=>(@theDate+1.month).month,:year=>(@theDate+1.month).year) %>
+<p>
 
-<% @hospitals.each do |hospital| %>
-  <tr>
-    <td><%= hospital.name %></td>
-    <td><%= link_to 'Show', hospital %></td>
-    <td><%= link_to 'Edit', edit_hospital_path(hospital) %></td>
-    <td><%= link_to 'Destroy', hospital, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+	<table border=1>
+	<%= render(:partial => "hospital",:collection=> @hospitals, :locals=>{theDate: @theDate,startDate: @startDate, periodSpan: @periodSpan, endDate: @endDate})%>
+	</table>
 
-<br />
+
 
 <%= link_to 'New Hospital', new_hospital_path %>

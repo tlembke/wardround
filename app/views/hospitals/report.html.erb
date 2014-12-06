@@ -1,0 +1,24 @@
+Summary for <%= @hospital.name%>   <%=@theDate.strftime("%B")+", "+@theDate.strftime("%Y")%>
+
+<p>
+<%= link_to " < "+(@theDate-1.month).strftime("%B"), report_hospital_path(:month=>(@theDate-1.month).month,:year=>(@theDate-1.month).year) %>  <%= link_to (@theDate+1.month).strftime("%B")+" > ", report_hospital_path(:month=>(@theDate+1.month).month,:year=>(@theDate+1.month).year) %>
+<table border=1>
+	<tr>
+		<td>Patient</td>
+		<td>Admitted</td>
+		<td>Discharged</td>
+		<% for i in 1..Time.days_in_month(@month.to_i, @year.to_i) %>
+			<td><%= i %></td>
+		<% end %>
+	</tr>
+<% @patients.each do |patient| %>
+<tr>
+<td><%= patient.name %></td>
+<td><%= patient.admission %></td>
+<td><%= patient.discharge %></td>
+<% for i in 1..Time.days_in_month(@month.to_i, @year.to_i) %>
+	<td><%= Visit.code(patient.id,i,@month,@year) %></td>
+<% end %>
+</tr>
+<% end %>
+</table>

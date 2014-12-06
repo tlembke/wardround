@@ -1,8 +1,13 @@
 <h1><%= @round.hospital.name%> <%=@round.date %> <%= @round.number.ordinalize+' visit' %> (<%= @round.id %>)</h1>
 <%= link_to 'New visit on same day', return_round_path(@round) %><p>
 <%= link_to 'Previous', rounds_path(:date=>@round.date-1.day,:round_id=>@round.previous,:hospital_id=>@round.hospital_id) %>
+Number -----<%= @round.number%>
+Hospital -----<%= @round.hospital_id%>
+Date -----<%= @round.date%>
+Number-----<%= @round.number%>
+Visits -----<%= @round.visits%>
 
-<%= link_to 'Next', rounds_path(:date=>@round.date+1.day,:round_id=>@round.next,:order=>'ASC',:hospital_id=>@round.hospital_id) unless @round.date==Date.today and @round.number==@round.visits%><p>
+
 
 	<% if @round.hospital.showtime %>
 								<a href="#" onclick="$('#claim-<%=@round.hospital.id%>').toggle('slow');return false;" style="text-decoration: none">Time</a>

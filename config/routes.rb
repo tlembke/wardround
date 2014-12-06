@@ -1,8 +1,16 @@
 Wardround::Application.routes.draw do
   
+ 
+  
+  # replace devise_for :users with:
+  devise_for :users,  :controllers => { :registrations => "users/registrations" }
+  
+
   root :to => "rounds#index"
   
   resources :claims
+  
+  resources :reports
 
   resources :rounds do
       member do
@@ -13,6 +21,8 @@ Wardround::Application.routes.draw do
   resources :visits do
       collection do
         post 'remove'
+        post 'charge'
+        post 'uncharge'
       end
     end
 
@@ -25,12 +35,17 @@ Wardround::Application.routes.draw do
         post 'changeward'
         post 'changestatus'
         post 'under'
+        post 'transfer'
       end
     end
   
   resources :hospitals do
     collection do
       get 'wards_by_hospital'
+    end
+    member do
+      get 'report'
+      get 'handover'
     end
   end
   

@@ -1,7 +1,8 @@
 
-<div data-role="page" data-theme="a" id='showround'  > 
+<div data-role="page" data-theme="b" id='showround'  > 
      <div data-role="header">
-				<%=link_to 'Hospitals',rounds_path, 'data-transition'=> 'slide','data-icon'=>"back",'data-direction'=>'reverse'%>
+				<%=link_to 'Home',rounds_path, 'data-transition'=> 'slide','data-icon'=>"home","data-iconpos"=>"notext",'data-direction'=>'reverse'%>
+				<%=link_to 'Report',hospitals_path(:theDate=>@round.date), "data-ajax"=>"false"%>
            <h1><%= @round.hospital.name%></h1>
 
      </div> 
@@ -19,7 +20,9 @@
 </div>
 			</div>
 			<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
-				<div data-role="header" data-theme="a" class="ui-corner-top">
+				<div data-role="header" data-theme="b"
+<
+< class="ui-corner-top">
 					<h1>Return visit on same day?</h1>
 				</div>
 				<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
@@ -40,7 +43,7 @@
 				<div class='checkBoxLeft'><%= check_box_tag @round.id,patient.id,patient.visited?(@round.id),:class => 'hidden-checkbox'%></div><%= link_to patient.name,patient_path(patient,:round_id=>@round.id),:class=>"detailListText","data-transition"=>"slide",'data-icon'=>"bars"%></li>
 			<% end %>
 		</ul>
-<%= link_to "Admit New Patient",new_patient_path("hospital_id"=>@round.hospital.id),"data-role"=>"button","data-theme"=>"b",'data-transition'=>'flip' %> 
+<%= link_to "Admit New Patient",new_patient_path("hospital_id"=>@round.hospital.id,"round_id"=>@round.id),"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide' %> 
 			
 
      

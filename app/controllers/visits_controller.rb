@@ -53,11 +53,15 @@ class VisitsController < ApplicationController
     @visit = Visit.new
     @patient=Patient.find(params[:patient_id])
     @round=Round.find(params[:round_id])
+
     @visit.patient_id=@patient.id
-    @visit.date=Date.today
+    @visit.date=@round.date
     @visit.round_id=@round.id
     @visit.duration=@round.hospital.duration
     @visit.item=@round.hospital.item
+    if @patient.charge == NIL or @patient.charge==0
+      @visit.item='0'
+    end
     respond_to do |format|
       if @visit.save
         format.html { redirect_to @visit, :notice => 'Visit was successfully created.' }
@@ -74,7 +78,7 @@ class VisitsController < ApplicationController
   # PUT /visits/1.json
   def update
     @visit = Visit.find(params[:id])
-
+ 
     respond_to do |format|
       if @visit.update_attributes(params[:visit])
         format.html { redirect_to @visit, :notice => 'Visit was successfully updated.' }
@@ -108,6 +112,43 @@ class VisitsController < ApplicationController
       format.json { head :no_content }
       format.js {render :nothing => true}
       format.mobile {render :nothing => true}
+    end
+  end
+  
+  def charge
+    @visit = Visit.where('patient_id=? and round_id=?',params[:patient_id],params[:round_id]).first
+    if @visit
+      @visit.item="1"
+
+      @visit.update_attribute(:item,@visit.item)
+    else
+        @visit = Visit.new
+        @patient=Patient.find(params[:patient_id])
+        @round=Round.find(params[:round_id])
+
+        @visit.patient_id=@patient.id
+        @visit.date=@round.date
+        @visit.round_id=@round.id
+        @visit.duration=@round.hospital.duration
+        @visit.item="1"
+        @visit.save    
+    end
+    
+    respond_to do |format|
+      format.html
+      format.js {render :nothing => true}
+    end
+  end
+  def uncharge
+    @visit = Visit.where('patient_id=? and round_id=?',params[:patient_id],params[:round_id]).first
+    if @visit
+      @visit.item="0"
+
+      @visit.update_attribute(:item,@visit.item)
+    end
+    respond_to do |format|
+      format.html
+      format.js {render :nothing => true}
     end
   end
 end

@@ -11,4 +11,14 @@ module ApplicationHelper
       month=month+2-3
       text="["+date.strftime("%Y")+","+month.to_s+","+date.strftime("%-d")+"]"
  end
+  
+ def monthAndYear(month,year)
+    month=Date.today.month unless month 
+    year=Date.today.month unless year
+    return 
+   
+ end
+ 
 end
+
+
