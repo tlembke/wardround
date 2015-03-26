@@ -9,9 +9,10 @@
 								<li><%= link_to hospital.name,rounds_path(:hospital_id=>hospital.id), "data-transition"=> "slide" %><span class="ui-li-count"><%= hospital.inpatients.count %></span></li>
 								<% end %>
            </ul>   
-<%= link_to "Admit New Patient",new_patient_path,"data-role"=>"button","data-theme"=>"b","data-ajax"=>'false',"data-transition"=> "slide" %> 
-<%= link_to "Report", hospitals_path,"data-role"=>"button","data-theme"=>"b","data-ajax"=>"false"%>   
-<%= link_to "Handover", hospitals_path(:handover=>true),"data-role"=>"button","data-theme"=>"b","data-ajax"=>"false"%>   
+
+<%= link_to "Admit New Patient",new_patient_path,"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide' %> 
+<%= link_to "Report", hospitals_path,"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide'%>   
+<%= link_to "Handover", hospitals_path(:handover=>true),"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide'%>   
      </div>   
 
 <%= render partial: "shared/footer" %>

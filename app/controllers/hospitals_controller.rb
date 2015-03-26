@@ -56,9 +56,12 @@ class HospitalsController < ApplicationController
         @periodSpan=@endDate.day
       end
     end
-
+    if request.xhr?
+      request.format = "mobile"
+    end
    
     respond_to do |format|
+      format.mobile
       format.html # index.html.erb
       format.json { render :json => @hospitals }
     end
@@ -78,9 +81,12 @@ class HospitalsController < ApplicationController
   
  
     # get patients who were in hospital during that month
-  
+    if request.xhr?
+      request.format = "mobile"
+    end
 
     respond_to do |format|
+      format.mobile
       format.html # show.html.erb
       format.json { render :json => @hospital }
     end

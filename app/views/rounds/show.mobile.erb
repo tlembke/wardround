@@ -2,7 +2,7 @@
 <div data-role="page" data-theme="b" id='showround'  > 
      <div data-role="header">
 				<%=link_to 'Home',rounds_path, 'data-transition'=> 'slide','data-icon'=>"home","data-iconpos"=>"notext",'data-direction'=>'reverse'%>
-				<%=link_to 'Report',hospitals_path(:theDate=>@round.date), "data-ajax"=>"false"%>
+				<%=link_to 'Report',hospitals_path(:theDate=>@round.date),'data-transition'=>'slide'%>
            <h1><%= @round.hospital.name%></h1>
 
      </div> 
