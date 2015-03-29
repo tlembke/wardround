@@ -53,12 +53,13 @@ class VisitsController < ApplicationController
     @visit = Visit.new
     @patient=Patient.find(params[:patient_id])
     @round=Round.find(params[:round_id])
-
+    @visit.doctor_id=current_user.id
     @visit.patient_id=@patient.id
     @visit.date=@round.date
     @visit.round_id=@round.id
     @visit.duration=@round.hospital.duration
     @visit.item=@round.hospital.item
+    
     if @patient.charge == NIL or @patient.charge==0
       @visit.item='0'
     end
@@ -66,7 +67,7 @@ class VisitsController < ApplicationController
       if @visit.save
         format.html { redirect_to @visit, :notice => 'Visit was successfully created.' }
         format.json { render :json => @visit, :status => :created, :location => @visit }
-        format.js {render :nothing => true}
+        format.js 
       else
         format.html { render :action => "new" }
         format.json { render :json => @visit.errors, :status => :unprocessable_entity }
@@ -117,8 +118,12 @@ class VisitsController < ApplicationController
   
   def charge
     @visit = Visit.where('patient_id=? and round_id=?',params[:patient_id],params[:round_id]).first
+    item=1;
+    if params[:item]
+        item=params[:item]
+    end
     if @visit
-      @visit.item="1"
+      @visit.item=item
 
       @visit.update_attribute(:item,@visit.item)
     else
@@ -130,7 +135,7 @@ class VisitsController < ApplicationController
         @visit.date=@round.date
         @visit.round_id=@round.id
         @visit.duration=@round.hospital.duration
-        @visit.item="1"
+        @visit.item=item
         @visit.save    
     end
     
@@ -151,4 +156,14 @@ class VisitsController < ApplicationController
       format.js {render :nothing => true}
     end
   end
+  private
+      # Use callbacks to share common setup or constraints between actions.
+    def set_visit
+      @visit = Visit.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def visit_params
+      params.require(:visit).permit(:date, :doctor_id, :duration, :item, :chargenote, :patient_id, :ward_id)
+    end
 end

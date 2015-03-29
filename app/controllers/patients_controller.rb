@@ -40,12 +40,12 @@ class PatientsController < ApplicationController
   def show
     @patient = Patient.find(params[:id])
     # best_in_place placeholder is unreliable
-    if @patient.reason=="" or @patient.reason== nil
-      @patient.reason="---"
-    end
-    if @patient.note=="" or @patient.note== nil
-      @patient.note="---"
-    end
+    #if @patient.reason=="" or @patient.reason== nil
+     # @patient.reason="---"
+    #end
+    #if @patient.note=="" or @patient.note== nil
+    #  @patient.note="---"
+    #end
     if @patient.mrn=="" or @patient.mrn== nil
       @patient.mrn="---"
     end
@@ -85,7 +85,7 @@ class PatientsController < ApplicationController
   # GET /patients/new.json
   def new
     @patient = Patient.new
-    @hospitals=Hospital.find(:all)
+    @hospitals=Hospital.all
     @hospital=Hospital.first
     if params[:hospital_id]
       @hospital=Hospital.find(params[:hospital_id])
@@ -193,6 +193,8 @@ class PatientsController < ApplicationController
   
   def transfer
       @patient = Patient.find(params[:id])
+
+      @round= Round.find(params[:round])
       @newHospital=Hospital.find(params[:hospital])
       @patient=Patient.update(params[:id],:discharge=>params[:transfer_date])
       @patient.note=@patient.note+"\rTransferred to "+ @newHospital.name
@@ -209,19 +211,22 @@ class PatientsController < ApplicationController
       @newPatient.status=@patient.status
       @newPatient.charge=@patient.charge
       @newPatient.mrn=nil
-      @patient.note=@patient.note+"\rTransferred to "+ @newHospital.name
+      # @patient.note=@patient.note+"\rTransferred to "+ @newHospital.name
       
       
       @newPatient.admission=params[:transfer_date]
       @newPatient.ward_id=params[:ward_id]
       @newPatient.discharge=nil
       
-      @patient.update_attributes(params[:patient])
+      # @patient.update_attributes(params[:patient])
       @newPatient.save
+      if request.xhr?
+          request.format = "mobile"
+      end
       
       respond_to do |format|
         format.html { redirect_to @newPatient, :notice => 'Patient was successfully transferred.' }
-        format.mobile { redirect_to @newPatient, :notice => 'Patient was successfully transferred.' }
+        format.mobile { redirect_to @round, :notice => 'Patient was successfully transferred.' }
         format.js
       end
       
@@ -303,6 +308,23 @@ class PatientsController < ApplicationController
       format.js {render :nothing => true}
     end
   end
+
+  def report
+      @patient=set_patient
+      request.format = "mobile"
+      @visits=Visit.where('patient_id=? and item>0',@patient.id).order(:date)
+  end
+
+  private
+      # Use callbacks to share common setup or constraints between actions.
+    def set_patient
+      @patient = Patient.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def patient_params
+      params.require(:patient).permit(:admission, :discharge, :name, :ward_id, :reason, :note, :mrn, :status, :under, :charge)
+    end
   
 
 

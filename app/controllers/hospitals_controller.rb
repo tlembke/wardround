@@ -155,6 +155,11 @@ class HospitalsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def change_hospital
+      @hospital=set_hospital
+      @wards = @hospital.wards
+  end
   
   
   def wards_by_hospital
@@ -203,5 +208,18 @@ class HospitalsController < ApplicationController
       format.json { render :json => @hospitals }
     end
   end
+
+  private
+      # Use callbacks to share common setup or constraints between actions.
+    def set_hospital
+      @hospital = Hospital.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def hospital_params
+      params.require(:hospital).permit(:name, :showtime, :duration, :item)
+    end
+
+
   
 end

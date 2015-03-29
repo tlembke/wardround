@@ -10,6 +10,7 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require addtohomescreen
 //= require_tree .
 
 
@@ -66,16 +67,48 @@ $('#showpatient').live('pageinit', function(event) {
 			  		$.ajax({
 				 		type: "POST",
 						data: {patient_id: $(this).attr('value'),round_id: $(this).attr('name')},
-						url : "/visits/charge",
-			   		})
+						url : "/visits",
+			   		});
+			   		$('#visititems').show();
+			   		$('#chargenote').show();
 			    } else {
 					$.ajax({
 				 		type: "POST",
 						data: {patient_id: $(this).attr('value'),round_id: $(this).attr('name')},
-						url : "/visits/uncharge",
-			   		})
+						url : "/visits/remove",
+			   		});
+			   		$('#visititems').hide();
+			   		$('#chargenote').hide();
 			    }
 			});
+
+
+
+
+			$(".visititem").change(function(){
+
+		
+			  		$.ajax({
+				 		type: "POST",
+						data: {patient_id: $(this).attr('data-patient'),round_id: $(this).attr('data-round'),item: $(this).val()},
+						url : "/visits/charge",
+			   		})
+
+			});
+
+			$("#hospital").change(function(){
+					
+					hospital=$(this).val();
+					alert(hospital);
+					$.ajax({
+				 		type: "GET",
+						url : "/hospitals/"+$(this).val()+"/change_hospital",
+			   		})
+
+			});
+
+
+
 		
 	// attrchanger
 	$(".attrchanger").change(function(){
@@ -128,6 +161,9 @@ $('#newpatient').live('pageinit', function(event) {
      	})
 	});
 });	
+
+
+
 
 $(document).ready(function() {
   /* Activating Best In Place */

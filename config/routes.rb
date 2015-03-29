@@ -36,16 +36,19 @@ Wardround::Application.routes.draw do
         post 'changestatus'
         post 'under'
         post 'transfer'
+        get 'report'
       end
     end
   
   resources :hospitals do
     collection do
       get 'wards_by_hospital'
+
     end
     member do
       get 'report'
       get 'handover'
+      get 'change_hospital'
     end
   end
   

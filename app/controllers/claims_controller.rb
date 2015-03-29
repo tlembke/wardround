@@ -83,4 +83,16 @@ class ClaimsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+      # Use callbacks to share common setup or constraints between actions.
+    def set_claim
+      @claim = Claim.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def claim_params
+      params.require(:claim).permit(:date, :doctor_id, :duration, :finish, :hospital_id, :round_id, :start, :claimable)
+    end
+
 end

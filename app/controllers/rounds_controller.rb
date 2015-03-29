@@ -14,7 +14,7 @@ class RoundsController < ApplicationController
         date=Date.strptime(params[:date],"%d/%m/%y") if params[:date]
         order="DESC"
         order = params[:order] if params[:order]
-        @round=Round.ondate(date,order,params[:hospital_id],current_user)
+        @round=Round.ondate(date,order,params[:hospital_id],current_user.id)
     end
     if @round
         redirect_to :action => "show", :id => @round.id
@@ -57,7 +57,7 @@ class RoundsController < ApplicationController
 
     @patients = @round.inpatients
     #@patients=Patient.find(:all)
-    @hospitals=Hospital.find(:all)
+    @hospitals=Hospital.all
     @wards=Array.new
     @hospitals.each do |hospital|
       @wards[hospital.id]=Ward.where('hospital_id=?',hospital.id)
@@ -148,4 +148,14 @@ class RoundsController < ApplicationController
      redirect_to :controller=>:rounds,:action=>:show,:id=>@round.id
 
   end
+  private
+      # Use callbacks to share common setup or constraints between actions.
+    def set_round
+      @round = Round.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def round_params
+      params.require(:round).permit(:claimable, :date, :doctor_id, :duration, :finish, :hospital_id, :start)
+    end
 end

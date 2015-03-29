@@ -1,8 +1,8 @@
 
 <div data-role="page" data-theme="b" id='showpatient'  style='max-width: 600px;'> 
 	     <div data-role="header">
-		 <%= link_to 'Back', round_path(@round),'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' if @round %>
-		 <%= link_to 'Back', hospitals_path(:theDate=>@theDate,:handover=>@handover),'data-icon'=>'back',"data-ajax"=>"false" unless @round %>
+		 <%= link_to 'Back', round_path(@round,:flag=>1),'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' if @round %>
+		 <%= link_to 'Back', hospitals_path(:theDate=>@theDate,:handover=>@handover),'data-icon'=>'back' unless @round %>
 	           <h1><%= @patient.name%></h1>
 	     </div> 
 	     <div data-role="content">
@@ -23,9 +23,8 @@
 					</div>
 
 
-
 					<div data-role="fieldcontain">
-						<div id="discharge-<%=@patient.id%>" <%="style='display: none'" unless @patient.discharge%> >
+						<div id="discharge-<%=@patient.id%>" <%="style='display: none'".html_safe unless @patient.discharge%> >
 
 							<label for="patient_discharge">Discharge      </label>
 							<span id='picker-discharge-<%=@patient.id%>>'>
@@ -33,7 +32,7 @@
 								<input name="patient[discharge]" class='attrchanger' data-attr='patient[discharge]' data-patient='<%=@patient.id %>' type="date" data-role="datebox"
 								   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(@patient.discharge) %>, "showInitialValue": true,"useFocus":true,"calControlGroup":true}'>
 
-							<div id='undischarge_button'<%="style='display: none'" unless @patient.discharge%> >
+							<div id='undischarge_button'<%="style='display: none'".html_safe unless @patient.discharge%> >
 							 <button id='undischarge' data-mini='true' data-patient='<%=@patient.id%>'>UnDischarge</button>
 							</div>
 							</span>
@@ -41,13 +40,14 @@
 
 
 
-						<div id='discharge_button' <%="style='display: none'" if @patient.discharge%>>
+						<div id='discharge_button' <%="style='display: none'".html_safe if @patient.discharge%>>
 							<button id='discharge' data-mini='true' data-patient='<%=@patient.id%>'>Discharge</button>
 						</div>
 					</div>
+
 					
-					
-				<% if @patient.otherHospitals.count >0 %>
+					Other hospitals count is <%= @patient.otherHospitals.count %>
+				<% if @patient.otherHospitals.count >0 and @round %>
 					<div data-role="fieldcontain">		
 							<div id='transfer_button'>
 
@@ -61,10 +61,13 @@
 							            </div>
 										
 							            <div data-role="content" data-theme="b"class="ui-corner-bottom ui-content">
-										<%= form_tag transfer_patient_path(@patient),"data-ajax"=>"false" do %>
+										<%= form_tag transfer_patient_path(@patient) do %>
+
+											<input type='hidden' name='round' value='<%= @round.id %>'>
 							                <h3 class="ui-title">Transfer to another hospital</h3>
+							               
 											<input name="transfer_date" class='attrchanger' data-attr='patient[transfer]' data-patient='<%=@patient.id %>' type="date" data-role="datebox"
-											   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(Date.today) %>, "showInitialValue": true,"zindex":10000,"useFocus":true,"calControlGroup":true}'>
+											   data-options='{"mode": "calbox", "overrideDateFormat": "%-d/%m/%Y","defaultValue": <%= initalformatdate(@round.date ) %>, "showInitialValue": true,"zindex":10000,"useFocus":true,"calControlGroup":true}'>
 											<div data-role="fieldcontain">
 												
 											  <%= select_tag("hospital",options_from_collection_for_select(@patient.otherHospitals,"id","name"),{"data-native-menu"=>"false","data-mini"=>"true","data-patient"=>@patient.id}) %> 
@@ -119,15 +122,51 @@
 
 					<%= select(:patient, :charge, [["no",0],["yes",1]],{},{"data-role"=>"slider","data-mini"=>"true","class"=>"attrchanger","data-attr"=>"patient[charge]","data-patient"=>@patient.id}) %>
 					</div>
+
+
+
+
+
+
+
+
 					<% if @round %>
-					<div data-role="fieldcontain">
-					<label for='<%= @round.id %>'>Charge This Round <%= @round.date %></label>
+					<fieldset class="ui-grid-a">
+ 
+					<div class="ui-block-a">
+						<div data-role="fieldcontain">
+						<label for='<%= @round.id %>'>Visit This Round (<%= @round.date %> )</label>
 
-
-					<%= check_box_tag @round.id,@patient.id,@patient.charged?(@round.id),"data-mini"=>"true"%>
-
-
+						<%= check_box_tag @round.id,@patient.id,@patient.visited?(@round.id),"data-mini"=>"true","data-inline"=>"true" %>
+						</div>
 					</div>
+					<div class="ui-block-b" style='text-align: center'>
+						<div data-role="fieldcontain" id="visititems" <%="style='display: none'".html_safe unless @patient.visited?(@round.id)%> >
+						<% @visit=@patient.visit(@round.id) %>
+					    Charge is <%= @visit.item %>
+					    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+
+						<%= radio_button "visit","item","0",{'class'=>'visititem','data-attr'=>'visit[item]','data-round'=>@round.id,'data-patient'=>@patient.id} %>
+						<label for="visit_item_0">No Charge</label>
+						<%= radio_button "visit","item","1",{'class'=>'visititem','data-attr'=>'visit[item]','data-round'=>@round.id,'data-patient'=>@patient.id} %>
+						<label for="visit_item_1">Normal</label>
+						<%= radio_button "visit","item","2",{'class'=>'visititem','data-attr'=>'visit[item]','data-round'=>@round.id,'data-patient'=>@patient.id} %>
+						<label for="visit_item_2">Long</label>
+						</fieldset>
+						</div>
+					</div>
+						<div data-role="fieldcontain" id="chargenote" <%="style='display: none'".html_safe unless @patient.visited?(@round.id)%> >
+						<b>Charge Note:</b>
+						<span id='chargenoteplace'>
+						
+						<% if @patient.visited?(@round.id)%>
+						
+				  <%= best_in_place @visit, :chargenote, :type => :input,:ok_button => 'Save',:place_holder => "---Add",:cancel_button => 'Cancel' %> 
+				  		
+				  	<% end %>
+				  		</span>
+						</div>
+					</fieldset>
 
 					<% end %>
 
@@ -148,7 +187,7 @@
 				  </div>
 				<div data-role="fieldcontain">
 						<%= link_to 'Done', round_path(@round),'data-transition'=>'slide',"data-role"=>"button",'data-icon'=>'back','data-direction'=>'reverse' if @round %>
-					    <%= link_to 'Done', hospitals_path(:theDate=>@theDate),'data-icon'=>'back',"data-role"=>"button","data-ajax"=>"false" unless @round %>
+					    <%= link_to 'Done', hospitals_path(:theDate=>@theDate),'data-icon'=>'back',"data-role"=>"button" unless @round %>
 				</div>
 				<div data-role="fieldcontain">		
 						<div id='delete_button'>
@@ -163,8 +202,8 @@
 						            <div data-role="content" data-theme="b"class="ui-corner-bottom ui-content">
 						                <h3 class="ui-title">Are you sure you want to delete this patient?</h3>
 						                <p> All data for this patient will be lost.This action cannot be undone.</p>
-						                <a href="#" data-role="button" data-rel="back" data-theme="c" data-ajax='false'>Cancel</a> 
-										<%= link_to "Delete",patient_path(@patient,"method"=>"delete","theDate"=>@theDate,"round_id"=>@round_id),'data-role'=>'button','data-icon'=>"delete","style"=>"background: red","data-ajax"=>"false"%>  
+						                <a href="#" data-role="button" data-rel="back" data-theme="c" >Cancel</a> 
+										<%= link_to "Delete",patient_path(@patient,"method"=>"delete","theDate"=>@theDate,"round_id"=>@round_id),'data-role'=>'button','data-icon'=>"delete","style"=>"background: red"%>  
 
 									</div>
 						</div>

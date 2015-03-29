@@ -1,12 +1,11 @@
 class Round < ActiveRecord::Base
-  attr_accessible :claimable, :date, :doctor_id, :duration, :finish, :hospital_id, :start
   has_many :claims
   belongs_to :hospital
   # round is a date and number - in case mpre than one ward round is done per day
   
   # Gets latest round for today, or creates new round if doesn/t exist
-  def self.today
-    @round=Round.where('date=?',Date.today).order("created_at DESC")[0]
+  def self.today(doctor)
+    @round=Round.where('date=? and doctor_id=?',Date.today,doctor).order("created_at DESC")[0]
     if @round.blank?
       @round=Round.new
       @round.date=Date.today
@@ -18,12 +17,14 @@ class Round < ActiveRecord::Base
   end
   
   def inpatients
-     @patients = Patient.joins(:ward => :hospital).where("hospital_id=?",self.hospital_id).find(:all,:conditions=>["admission <=? and (discharge is NULL or discharge>=?)",self.date,self.date],:order=>"ward_id ASC")
+     @patients = Patient.joins(:ward => :hospital).where("hospital_id=?",self.hospital_id).where(["admission <=? and (discharge is NULL or discharge>=?)",self.date,self.date])
+     #@patients = Patient.joins(:ward => :hospital).where("hospital_id=?",self.hospital_id).where(["admission <=? and (discharge is NULL or discharge>=?)",self.date,self.date],:order=>"ward_id ASC")
+
   end
   
   
-  def self.ondate(date,order="DESC",hospital,current_user)
-      @round=Round.where('date=? AND hospital_id=?',date,hospital).order("created_at "+order)[0]
+  def self.ondate(date,order="DESC",hospital,doctor)
+      @round=Round.where('date=? AND hospital_id=? and doctor_id=?',date,hospital,doctor).order("created_at "+order)[0]
       if @round.blank?
         @round=Round.new 
         @round.date=date
@@ -33,8 +34,7 @@ class Round < ActiveRecord::Base
         elsif Hospital.count==1
           @round.hospital_id=Hospital.first.id
         end
-        @user = current_user
-        @round.doctor_id=@user.id
+        @round.doctor_id=doctor
         @round.save
       end
 
@@ -43,24 +43,24 @@ class Round < ActiveRecord::Base
     end  
   
   
-  def previous
+  def previous(doctor)
       round=0
       if self.number>1
-        @round=Round.where('date=? and number=? and hospital_id=?',self.date,self.number-1,self.hospital_id)[0]
+        @round=Round.where('date=? and number=? and hospital_id=? and doctor_id=?',self.date,self.number-1,self.hospital_id,doctor)[0]
         round=@round.id
       end
       return round
   end
   
-  def visits
-      Round.where('date=? AND hospital_id=?',self.date,self.hospital_id).count
+  def visits(doctor)
+      Round.where('date=? AND hospital_id=? AND doctor_id=?',self.date,self.hospital_id,doctor).count
   end
   
-  def next
+  def next(doctor)
       round=0
 
-      if self.visits>self.number
-        @round=Round.where('date=? and number=?',self.date,self.number+1)[0]
+      if self.visits(doctor)>self.number
+        @round=Round.where('date=? and number=? and doctor_id=?',self.date,self.number+1,doctor)[0]
         if @round 
           round=@round.id
         end
@@ -72,8 +72,9 @@ class Round < ActiveRecord::Base
       @round=Round.new
       @round.hospital_id=self.hospital_id
       @round.date=self.date
-      @round.number=self.visits+1
+      @round.number=self.visits(self.doctor_id)+1
       @round.start=Time.now
+      @round.doctor_id=self.doctor_id
       @round.save
       return @round
   end    
