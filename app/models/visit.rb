@@ -24,6 +24,15 @@ class Visit < ActiveRecord::Base
 
 
   end
+  
+  def item_text
+      r="---"
+      r="No Charge" if self.item=="0"
+      r="Normal" if self.item=="1"
+      r="Long" if self.item=="2"
+      return r
+    
+  end
 
   def doctor
       if self.doctor_id

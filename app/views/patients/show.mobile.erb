@@ -1,8 +1,11 @@
 
 <div data-role="page" data-theme="b" id='showpatient'  style='max-width: 600px;'> 
 	     <div data-role="header">
+
 		 <%= link_to 'Back', round_path(@round,:flag=>1),'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' if @round %>
-		 <%= link_to 'Back', hospitals_path(:theDate=>@theDate,:handover=>@handover),'data-icon'=>'back' unless @round %>
+		 <%= link_to 'Back', hospitals_path(:theDate=>@theDate,:handover=>@handover),'data-icon'=>'back' if @return=="handover" %>
+		<%= link_to 'Back',report_patient_path(@patient),'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' if @return=="report"%>
+		<%= link_to "Home",rounds_path(),"data-role"=>"button","data-icon"=>"home","data-inline"=>"true","data-iconpos"=>"notext","data-theme"=>"b",'data-transition'=>'slide','data-direction'=>'reverse'%>
 	           <h1><%= @patient.name%></h1>
 	     </div> 
 	     <div data-role="content">
@@ -14,6 +17,23 @@
 				  <label><b>MRN:  </b></label>
 				  <%= best_in_place @patient, :mrn,:type => :input,:ok_button => 'Save',:place_holder => "---Add",:cancel_button => 'Cancel'  %>
 				</div>
+				
+					<div data-role="fieldcontain">
+		      <label for="patient_ward_id">Ward:</label>
+						<%= select(:patient, :ward_id,@patient.ward.hospital.wards.map {|x| [x.name, x.id] },{},{"data-native-menu"=>"false","data-mini"=>"true","data-patient"=>@patient.id}) %> 
+
+					</div>
+					<div data-role="fieldcontain">
+					<b>Reason:</b>
+				  <%= best_in_place @patient, :reason, :type => :input,:ok_button => 'Save',:place_holder => "---Add",:cancel_button => 'Cancel' %> 	 
+					</div>
+
+					<div data-role="fieldcontain">
+					<b>Note:</b>
+				  <%= best_in_place @patient, :note, :type => :input,:ok_button => 'Save',:place_holder => "---Add",:cancel_button => 'Cancel' %> 	 
+				  </div>				
+				
+				
 					<div data-role="fieldcontain">
 					<label for="patient_admission">Admission      </label>
 
@@ -111,20 +131,23 @@
 					<label for="patient_status_4">WC</label>
 					    </fieldset>
 					</div>
-
+<fieldset class="ui-grid-a">
+<div class="ui-block-a" >
 					<div data-role="fieldcontain">
 					<label for="patient_under">Under Us</label>
 					<%= select(:patient, :under, [["no",0],["yes",1]],{},{"data-role"=>"slider","data-mini"=>"true","class"=>"attrchanger","data-attr"=>"patient[under]","data-patient"=>@patient.id}) %>
 
 					</div>
+ </div>
+<div class="ui-block-b" >
 					<div data-role="fieldcontain">
 					<label for="patient_charge">Charge Default</label>
 
 					<%= select(:patient, :charge, [["no",0],["yes",1]],{},{"data-role"=>"slider","data-mini"=>"true","class"=>"attrchanger","data-attr"=>"patient[charge]","data-patient"=>@patient.id}) %>
 					</div>
 
-
-
+</div>
+</fieldset>
 
 
 
@@ -170,24 +193,18 @@
 
 					<% end %>
 
+
+
+
 				<div data-role="fieldcontain">
-	      <label for="patient_ward_id">Ward:</label>
-					<%= select(:patient, :ward_id,@patient.ward.hospital.wards.map {|x| [x.name, x.id] },{},{"data-native-menu"=>"false","data-mini"=>"true","data-patient"=>@patient.id}) %> 
+					
+					
+					
+					
+					 <%= link_to 'Done', round_path(@round,:flag=>1),'data-transition'=>'slide',"data-role"=>"button",'data-icon'=>'back','data-direction'=>'reverse' if @round %>
+					 <%= link_to 'Done', hospitals_path(:theDate=>@theDate,:handover=>@handover),"data-role"=>"button",'data-icon'=>'back' if @return=="handover" %>
+					<%= link_to 'Done',report_patient_path(@patient),'data-transition'=>'slide',"data-role"=>"button",'data-icon'=>'back','data-direction'=>'reverse' if @return=="report"%>
 
-				</div>
-
-					<div data-role="fieldcontain">
-					<b>Reason:</b>
-				  <%= best_in_place @patient, :reason, :type => :input,:ok_button => 'Save',:place_holder => "---Add",:cancel_button => 'Cancel' %> 	 
-					</div>
-
-					<div data-role="fieldcontain">
-					<b>Note:</b>
-				  <%= best_in_place @patient, :note, :type => :input,:ok_button => 'Save',:place_holder => "---Add",:cancel_button => 'Cancel' %> 	 
-				  </div>
-				<div data-role="fieldcontain">
-						<%= link_to 'Done', round_path(@round),'data-transition'=>'slide',"data-role"=>"button",'data-icon'=>'back','data-direction'=>'reverse' if @round %>
-					    <%= link_to 'Done', hospitals_path(:theDate=>@theDate),'data-icon'=>'back',"data-role"=>"button" unless @round %>
 				</div>
 				<div data-role="fieldcontain">		
 						<div id='delete_button'>

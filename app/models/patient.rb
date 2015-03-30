@@ -46,6 +46,15 @@ class Patient < ActiveRecord::Base
     end
     return icon
   end
+  
+  def status_text
+      r="Unknown"
+      r="Public" if self.status==1
+      r="Private" if self.status==2
+      r="DVA" if self.status==3
+      r="Workcover" if self.status==4
+      return r
+  end
 
   def item(round)
     charge=0

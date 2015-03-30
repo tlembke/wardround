@@ -52,10 +52,13 @@ class PatientsController < ApplicationController
     if params[:theDate]
         @theDate=Date.strptime(params[:theDate],'%d/%m/%y')
     end
+    @return=params[:return]
     @handover=false
     if params[:handover]
       @handover=params[:handover]
     end
+
+
     @round_id=0
     if params[:round_id] and params[:round_id]!='0'
       @round=Round.find(params[:round_id])
@@ -311,8 +314,13 @@ class PatientsController < ApplicationController
 
   def report
       @patient=set_patient
-      request.format = "mobile"
       @visits=Visit.where('patient_id=? and item>0',@patient.id).order(:date)
+      request.format = "mobile"
+      respond_to do |format|
+        format.html 
+        format.json { render :json => @patient }
+        format.mobile 
+      end
   end
 
   private

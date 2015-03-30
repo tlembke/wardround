@@ -37,7 +37,7 @@
 	<% hospital.patients(startDate,endDate).each do |patient| %>
 	<tr>
 		<td><%= link_to patient.name,report_patient_path(patient) %></td>
-		<td><%= link_to 'Edit',patient_path(patient,"theDate"=>theDate) %></td>
+		<td><%= link_to 'Edit',patient_path(patient,"theDate"=>theDate,:return=>"handover",:handover=>@handover) %></td>
 		<td><%= patient.ward.name %></td>
 		<td><%= patient.admission %></td>
 		<% if periodSpan==1 %>
@@ -48,7 +48,7 @@
 			<td><%= patient.discharge %></td>
 			<% thisDate = startDate %>
 			<% for i in 1..periodSpan %>
-				<td <%="style='background:black';" unless (patient.discharge==NIL or thisDate <= patient.discharge) and patient.admission<=thisDate %>><%= Visit.code(patient.id,thisDate) %></td>
+				<td <%="style='background:#5e87b0';".html_safe unless (patient.discharge==NIL or thisDate <= patient.discharge) and patient.admission<=thisDate %>><%= Visit.code(patient.id,thisDate) %></td>
 				<% thisDate = thisDate+1.day %>
 			<% end %>
 		<% end %>

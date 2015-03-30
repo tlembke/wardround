@@ -9,7 +9,8 @@
 Hospital <%= @patient.ward.hospital.name %><br>
 Admitted <%= @patient.admission %><br>
 Discharged <%= @patient.discharge %><br>
-This is mobile<p>
+Status <%= @patient.status_text %><br>
+<%= link_to 'Edit',patient_path(:return=>"report") %>
 <style>
 #tablereport {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -53,7 +54,7 @@ This is mobile<p>
 <tr>
 <td><%= visit.date %></td>	
 <td><%= visit.doctor %></td>
-<td><%= visit.item %></td>
+<td><%= visit.item_text %></td>
 <td><%= visit.chargenote %></td>
 </tr>
 <% end %>

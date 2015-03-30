@@ -60,7 +60,7 @@ $('#showround').live('pageinit', function(event) {
 		});
 });
 $('#showpatient').live('pageinit', function(event) {
-
+			$('.best_in_place').best_in_place();
 		
 			$('input[type="checkbox"]').bind('click', function(e) {
 			    if($(this).is(':checked')){
