@@ -107,11 +107,11 @@ class VisitsController < ApplicationController
   def remove
     @visit = Visit.where('patient_id=? and round_id=?',params[:patient_id],params[:round_id]).first
     @visit.destroy
-
+    @patient_id=params[:patient_id]
     respond_to do |format|
       format.html { redirect_to visits_url }
       format.json { head :no_content }
-      format.js {render :nothing => true}
+      format.js 
       format.mobile {render :nothing => true}
     end
   end

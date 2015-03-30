@@ -40,7 +40,7 @@
 			 <% current_ward=patient.ward.id %>
 			<% end %>
 			<li>
-				<div class='checkBoxLeft'><%= check_box_tag @round.id,patient.id,patient.visited?(@round.id),:class => 'hidden-checkbox'%></div><%= link_to patient.name,patient_path(patient,:round_id=>@round.id,:flag=>1),:class=>"detailListText","data-transition"=>"slide",'data-icon'=>"bars"%></li>
+				<div class='checkBoxLeft'><%= check_box_tag @round.id,patient.id,patient.visited?(@round.id),:class => 'hidden-checkbox'%></div><%= link_to raw(patient.name+ " <span id='chargeicon-"+patient.id.to_s+"'>"+patient.icons(@round.id)+"</span>"),patient_path(patient,:round_id=>@round.id,:flag=>1),:class=>"detailListText","data-transition"=>"slide",'data-icon'=>"bars"%></li>
 			<% end %>
 		</ul>
 <%= link_to "Admit New Patient",new_patient_path("hospital_id"=>@round.hospital.id,"round_id"=>@round.id),"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide' %> 

@@ -9,7 +9,8 @@
 //
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
-//
+// is this here
+//= require best_in_place
 //= require addtohomescreen
 //= require_tree .
 
@@ -62,7 +63,6 @@ $('#showpatient').live('pageinit', function(event) {
 
 		
 			$('input[type="checkbox"]').bind('click', function(e) {
-
 			    if($(this).is(':checked')){
 			  		$.ajax({
 				 		type: "POST",
@@ -84,10 +84,8 @@ $('#showpatient').live('pageinit', function(event) {
 
 
 
+			$("input[name='visit[item]']").change(function(){
 
-			$(".visititem").change(function(){
-
-		
 			  		$.ajax({
 				 		type: "POST",
 						data: {patient_id: $(this).attr('data-patient'),round_id: $(this).attr('data-round'),item: $(this).val()},

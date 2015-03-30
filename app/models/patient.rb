@@ -15,6 +15,37 @@ class Patient < ActiveRecord::Base
   def charged?(round)
     Visit.where(["patient_id=? and round_id=? and item>0",self.id,round]).present?
   end
+  
+  def charge_icon(round)
+    icon="";
+    if Visit.where(["patient_id=? and round_id=? and item>0",self.id,round]).present?
+      icon="c";
+    end
+    return icon
+  end
+  
+  def under_icon
+    icon=""
+    if self.under==1
+      icon="u"
+    end
+    return icon
+  end
+  
+  def icons(round)
+    icon="";
+    if Visit.where(["patient_id=? and round_id=? and item>0",self.id,round]).present?
+      icon+="c";
+    end
+    if self.under==1
+      icon+="u"
+    end
+    @round=Round.find(round)
+    if self.discharge == @round.date
+      icon+="d"
+    end
+    return icon
+  end
 
   def item(round)
     charge=0

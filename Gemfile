@@ -4,8 +4,9 @@ gem 'rails', '4.2.0'
 gem 'yaml_db'
 gem 'devise'
 gem 'cancancan'
-gem 'byebug'
+
 gem 'add-to-homescreen-rails'
+gem 'minitest'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

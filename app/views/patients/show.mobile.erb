@@ -46,7 +46,7 @@
 					</div>
 
 					
-					Other hospitals count is <%= @patient.otherHospitals.count %>
+				
 				<% if @patient.otherHospitals.count >0 and @round %>
 					<div data-role="fieldcontain">		
 							<div id='transfer_button'>
@@ -143,14 +143,14 @@
 					<div class="ui-block-b" style='text-align: center'>
 						<div data-role="fieldcontain" id="visititems" <%="style='display: none'".html_safe unless @patient.visited?(@round.id)%> >
 						<% @visit=@patient.visit(@round.id) %>
-					    Charge is <%= @visit.item %>
+					   
 					    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 
-						<%= radio_button "visit","item","0",{'class'=>'visititem','data-attr'=>'visit[item]','data-round'=>@round.id,'data-patient'=>@patient.id} %>
+						<%= radio_button "visit","item","0",{'class'=>'visititemclass','data-attr'=>'visit[item]','data-round'=>@round.id,'data-patient'=>@patient.id} %>
 						<label for="visit_item_0">No Charge</label>
-						<%= radio_button "visit","item","1",{'class'=>'visititem','data-attr'=>'visit[item]','data-round'=>@round.id,'data-patient'=>@patient.id} %>
+						<%= radio_button "visit","item","1",{'class'=>'visititemclass','data-attr'=>'visit[item]','data-round'=>@round.id,'data-patient'=>@patient.id} %>
 						<label for="visit_item_1">Normal</label>
-						<%= radio_button "visit","item","2",{'class'=>'visititem','data-attr'=>'visit[item]','data-round'=>@round.id,'data-patient'=>@patient.id} %>
+						<%= radio_button "visit","item","2",{'class'=>'visititemclass','data-attr'=>'visit[item]','data-round'=>@round.id,'data-patient'=>@patient.id} %>
 						<label for="visit_item_2">Long</label>
 						</fieldset>
 						</div>
