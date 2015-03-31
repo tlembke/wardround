@@ -1,16 +1,18 @@
-<div data-role="page" data-theme="b" id='newpatient'  > 
+<div data-role="page" data-theme="b" id='patientreport'  > 
      <div data-role="header">
      <%= link_to 'Back', :back,'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' %>
      		<%=link_to 'Home',rounds_path, 'data-transition'=> 'slide','data-icon'=>"home","data-iconpos"=>"notext",'data-direction'=>'reverse'%>
      		
 					<h1>Charge Report for <%= @patient.name %> </h1>
      </div>
-<b><%= @patient.name %></b><p>
+<div data-role="content">
+	<div data-role="fieldcontain">
+<b><%= @patient.name %></b>  (<%= link_to 'Edit',patient_path(:return=>"report") %>)<p>
 Hospital <%= @patient.ward.hospital.name %><br>
 Admitted <%= @patient.admission %><br>
 Discharged <%= @patient.discharge %><br>
 Status <%= @patient.status_text %><br>
-<%= link_to 'Edit',patient_path(:return=>"report") %>
+</div>
 <style>
 #tablereport {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -61,4 +63,5 @@ Status <%= @patient.status_text %><br>
 </tbody>
 </table>
 
+</div>
 </div>

@@ -1,9 +1,12 @@
 <div data-role="page" data-theme="b" > 
 	<div data-role="header">
-
+<%= link_to "Handover", hospitals_path(:handover=>true),"data-inline"=>"true",'data-transition'=>'flip' unless @handover%> 
+<%= link_to "Report", hospitals_path(:handover=>false),"data-inline"=>"true",'data-transition'=>'flip'if @handover%> 
 <h1>
 <%= link_to "Home",rounds_path(),"data-role"=>"button","data-icon"=>"home","data-inline"=>"true","data-iconpos"=>"notext","data-theme"=>"b",'data-transition'=>'slide','data-direction'=>'reverse'%>
-<%= link_to "Prev", hospitals_path(:theDate=>@prevDate,:handover=>@handover),"data-role"=>"button","data-icon"=>"arrow-l","data-inline"=>"true","data-iconpos"=>"notext","data-theme"=>"b" %><%= @theDate.strftime("%d") if @periodSpan==1 %> <%=@theDate.strftime("%B")+", "+@theDate.strftime("%Y")%><%= link_to "Next", hospitals_path(:theDate=>@nextDate,:handover=>@handover),"data-role"=>"button","data-icon"=>"arrow-r","data-inline"=>"true","data-iconpos"=>"notext","data-theme"=>"b" %></h1>
+<%= link_to "Prev", hospitals_path(:theDate=>@prevDate,:handover=>@handover),"data-role"=>"button","data-icon"=>"arrow-l","data-inline"=>"true","data-iconpos"=>"notext","data-theme"=>"b",'data-transition'=>'slide','data-direction'=>'reverse' %><%= @theDate.strftime("%d") if @periodSpan==1 %> <%=@theDate.strftime("%B")+", "+@theDate.strftime("%Y")%>
+<%= link_to "Next", hospitals_path(:theDate=>@nextDate,:handover=>@handover),"data-role"=>"button",'data-transition'=>'slide',"data-icon"=>"arrow-r","data-inline"=>"true","data-iconpos"=>"notext","data-theme"=>"b" %></h1>
+
     </div>
 <p>
 

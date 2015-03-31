@@ -9,7 +9,7 @@ class Ability
     elsif user.role? :manager
       can :manage, :all
     elsif user.role? :doctor
-      can :manage, [Round, Hospital,Patient]
+      can :manage, [Round, Hospital,Patient,Visit,Ward]
       # manage products, assets he owns
       ##can :manage, Product do |product|
        ## product.try(:owner) == user

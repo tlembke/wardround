@@ -17,7 +17,7 @@
 
 		<tr>
 			<td>Patient</td>
-			<td></td>
+		
 			<td>Ward</td>
 			<td>Admitted</td>
 			<% if periodSpan==1 %>
@@ -37,7 +37,7 @@
 	<% hospital.patients(startDate,endDate).each do |patient| %>
 	<tr>
 		<td><%= link_to patient.name,report_patient_path(patient) %></td>
-		<td><%= link_to 'Edit',patient_path(patient,"theDate"=>theDate,:return=>"handover",:handover=>@handover) %></td>
+
 		<td><%= patient.ward.name %></td>
 		<td><%= patient.admission %></td>
 		<% if periodSpan==1 %>
