@@ -27,7 +27,7 @@ class WardsController < ApplicationController
   # GET /wards/new.json
   def new
     @ward = Ward.new
-    @hospitals=Hospital.find(:all,:order => "name")
+    @hospitals=Hospital.all.order(:name)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render :json => @ward }
@@ -36,7 +36,7 @@ class WardsController < ApplicationController
 
   # GET /wards/1/edit
   def edit
-    @hospitals=Hospital.find(:all,:order => "name")
+    @hospitals=Hospital.all.order(:name)
     @ward = Ward.find(params[:id])
   end
 
