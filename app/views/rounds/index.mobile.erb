@@ -12,7 +12,8 @@
 
 <%= link_to "Admit New Patient",new_patient_path,"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide' %> 
 <%= link_to "Report", hospitals_path,"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide'%>   
-<%= link_to "Handover", hospitals_path(:handover=>true),"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide'%>   
+<%= link_to "Handover", hospitals_path(:handover=>true),"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide'%> 
+<%= link_to "Billing Summary", visits_path,"data-role"=>"button","data-theme"=>"b",'data-transition'=>'slide'%>  
      </div>   
 
 <%= render partial: "shared/footer" %>

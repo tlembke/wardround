@@ -4,7 +4,7 @@ gem 'rails', '4.2.0'
 gem 'yaml_db'
 gem 'devise'
 gem 'cancancan'
-gem 'seed_dump'
+
 
 gem 'add-to-homescreen-rails'
 gem 'minitest'

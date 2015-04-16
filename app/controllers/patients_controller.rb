@@ -315,6 +315,7 @@ class PatientsController < ApplicationController
   def report
       @patient=set_patient
       @visits=Visit.where('patient_id=? and item>0',@patient.id).order(:date)
+      @return= params[:return]
       request.format = "mobile"
       respond_to do |format|
         format.html 

@@ -3,9 +3,11 @@ class VisitsController < ApplicationController
   # GET /visits
   # GET /visits.json
   def index
-    @visits = Visit.all
-
+    @patients=Patient.joins(:visits).where("visits.billed = 'f' or visits.billed IS NULL").where("visits.item>0").order(:admission).distinct
+    request.format="mobile"
     respond_to do |format|
+      format.js
+      format.mobile
       format.html # index.html.erb
       format.json { render :json => @visits }
     end
@@ -79,14 +81,18 @@ class VisitsController < ApplicationController
   # PUT /visits/1.json
   def update
     @visit = Visit.find(params[:id])
- 
+    @billFlag=0
+    @billFlag=1 if params[:visit][:billed].present?
+    @patient=@visit.patient
     respond_to do |format|
       if @visit.update_attributes(params[:visit])
         format.html { redirect_to @visit, :notice => 'Visit was successfully updated.' }
         format.json { respond_with_bip(@visit) }
+        format.js
       else
         format.html { render :action => "edit" }
         format.json { render :json => @visit.errors, :status => :unprocessable_entity }
+        format.js
       end
     end
   end
@@ -108,6 +114,8 @@ class VisitsController < ApplicationController
     @visit = Visit.where('patient_id=? and round_id=?',params[:patient_id],params[:round_id]).first
     @visit.destroy
     @patient_id=params[:patient_id]
+    @patient=Patient.find(params[:patient_id])
+    @round_id=params[:round_id]
     respond_to do |format|
       format.html { redirect_to visits_url }
       format.json { head :no_content }
@@ -164,6 +172,6 @@ class VisitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def visit_params
-      params.require(:visit).permit(:date, :doctor_id, :duration, :item, :chargenote, :patient_id, :ward_id)
+      params.require(:visit).permit(:date, :doctor_id, :duration, :item, :chargenote, :patient_id, :ward_id, :billed)
     end
 end

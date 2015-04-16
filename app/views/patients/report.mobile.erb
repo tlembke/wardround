@@ -1,7 +1,8 @@
 <div data-role="page" data-theme="b" id='patientreport'  > 
      <div data-role="header">
-     <%= link_to 'Back', :back,'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' %>
-     		<%=link_to 'Home',rounds_path, 'data-transition'=> 'slide','data-icon'=>"home","data-iconpos"=>"notext",'data-direction'=>'reverse'%>
+     <%= link_to 'Back', :back,'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' unless @return=='unbilled' %>
+     <%= link_to 'Back', visits_path(:return=>:unbilled),'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' if @return=='unbilled' %>
+            <%=link_to 'Home',rounds_path, 'data-transition'=> 'slide','data-icon'=>"home","data-iconpos"=>"notext",'data-direction'=>'reverse'%>
      		
 					<h1>Charge Report for <%= @patient.name %> </h1>
      </div>
@@ -12,6 +13,11 @@ Hospital <%= @patient.ward.hospital.name %><br>
 Admitted <%= @patient.admission %><br>
 Discharged <%= @patient.discharge %><br>
 Status <%= @patient.status_text %><br>
+<p>
+Visits <%= @patient.visitsTotal %><br>
+Charged <%= @patient.visitsCharged %><br>
+Billed <span id='billed-<%=@patient.id%>'><%= @patient.visitsBilled %></span><br>
+
 </div>
 <style>
 #tablereport {
@@ -48,6 +54,7 @@ Status <%= @patient.status_text %><br>
 <th>Doctor</th>
 <th>Item</th>
 <th>Note</th>
+<th>Billed</th>
 </thead>
 
 
@@ -58,6 +65,7 @@ Status <%= @patient.status_text %><br>
 <td><%= visit.doctor %></td>
 <td><%= visit.item_text %></td>
 <td><%= visit.chargenote %></td>
+<td><input type="checkbox" class="visitbilled" data-visit="<%=visit.id %>" data-inline="true" <%= "checked" if visit.billed %> ></td>
 </tr>
 <% end %>
 </tbody>

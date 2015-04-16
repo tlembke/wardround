@@ -1,5 +1,5 @@
 <tr>
-<td colspan=4>
+<td colspan=5>
 <b><%= hospital.name %></b>
 </td>
 <% if periodSpan>1 %>
@@ -26,6 +26,7 @@
 				<td>Note</td>
 			<% else %>
 				<td>Discharged</td>
+				<td>Bill</td>
 				<% thisDate = startDate%>
 				<% for i in 1..periodSpan %>
 					
@@ -46,6 +47,7 @@
 			<td><%= patient.note %></td>
 		<% else %>
 			<td><%= patient.discharge %></td>
+			<td <%= "style='font-weight:bold;'".html_safe if patient.visitsBilled<patient.visitsCharged %>><%= patient.visitsBilled %>/<%= patient.visitsCharged %></td>
 			<% thisDate = startDate %>
 			<% for i in 1..periodSpan %>
 				<td <%="style='background:#5e87b0';".html_safe unless (patient.discharge==NIL or thisDate <= patient.discharge) and patient.admission<=thisDate %>><%= Visit.code(patient.id,thisDate) %></td>

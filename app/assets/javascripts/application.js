@@ -161,6 +161,21 @@ $('#newpatient').live('pageinit', function(event) {
 });	
 
 
+$('#patientreport').live('pageinit', function(event) {
+	$(".visitbilled").bind('click', function(e) {
+
+
+		var dataObj = {};
+
+		dataObj['visit[billed]']=$(this).is(':checked');
+		$.ajax({
+			type: "PUT",
+			data: dataObj,
+			url : "/visits/"+$(this).attr('data-visit')
+   		})
+	});
+});
+
 
 
 $(document).ready(function() {

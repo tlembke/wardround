@@ -1,0 +1,4 @@
+
+<% if @billFlag==1 %>
+	$('#billed-<%=@patient.id.to_s%>').html("<%=j @patient.visitsBilled.to_s %>");
+<% end %>

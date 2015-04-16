@@ -95,5 +95,24 @@ class Patient < ActiveRecord::Base
       Patient.where(["admission< ? and (discharge='' or discharge >= ?) and #{wardStr}",firstDay.strftime("%Y-%m-%d"),lastDay.strftime("%Y-%m-%d")])
       #Patient.find(:all,:conditions=>[wardStr])
   end
+
+  # How many visits this period, how many charged
+  
+  def visitsBilled
+      count=Visit.where(["patient_id=? and billed =?",self.id,true]).count
+      return count
+  end
+
+  def visitsTotal
+      count=Visit.where(["patient_id=?",self.id]).count
+      return count
+  end
+
+  def visitsCharged
+      count=Visit.where(["patient_id=? and item>0",self.id]).count
+      return count
+  end
+
+
   
 end

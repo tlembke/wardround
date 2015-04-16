@@ -1,0 +1,72 @@
+<div data-role="page" data-theme="b" id='visitreport'  > 
+     <div data-role="header">
+     <%= link_to 'Back', :back,'data-transition'=>'slide','data-icon'=>'back','data-direction'=>'reverse' %>
+     		<%=link_to 'Home',rounds_path, 'data-transition'=> 'slide','data-icon'=>"home","data-iconpos"=>"notext",'data-direction'=>'reverse'%>
+     		
+					<h1>Unbilled Patient Report</h1>
+     </div>
+<div data-role="content">
+	<div data-role="fieldcontain">
+
+<style>
+#tablereport {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    
+    border-collapse: collapse;
+}
+
+#tablereport td, #tablereport th {
+    font-size: 1em;
+    border: 1px solid #000000;
+    padding: 3px 7px 2px 7px;
+}
+
+#tablereport th {
+    font-size: 1.1em;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #5e87b0;
+    color: #ffffff;
+}
+
+#tablereport tr.alt td {
+    color: #000000;
+    background-color: #EAF2D3;
+}
+</style>
+
+<table data-role="table" id="tablereport">
+
+<thead>
+<th>Patient</th>
+<th>Hospital</th>
+<th>Admission</th>
+<th>Discharge</th>
+<th>Status</th>
+<th>Visits</th>
+<th>Charged</th>
+<th>Billed</th>
+</thead>
+
+
+
+
+<tbody>
+<% @patients.each do |patient| %>
+<tr>
+<td><%= link_to patient.name,report_patient_path(patient,:return=>:unbilled) %></td>
+<td></td>
+<td><%= patient.admission%></td>    
+<td><%= patient.discharge %></td>
+<td><%= patient.status %></td>
+<td><%= patient.visitsTotal %></td>
+<td><%= patient.visitsCharged %></td>
+<td><%= patient.visitsBilled %></td>
+</tr>
+<% end %>
+</tbody>
+</table>
+
+</div>
+</div>

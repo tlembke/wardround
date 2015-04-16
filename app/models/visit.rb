@@ -40,4 +40,5 @@ class Visit < ActiveRecord::Base
         return doctor.name
       end
   end
+
 end
