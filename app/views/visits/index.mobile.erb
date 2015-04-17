@@ -56,7 +56,7 @@
 <% @patients.each do |patient| %>
 <tr>
 <td><%= link_to patient.name,report_patient_path(patient,:return=>:unbilled) %></td>
-<td></td>
+<td><%= patient.ward.hospital.name %></td>
 <td><%= patient.admission%></td>    
 <td><%= patient.discharge %></td>
 <td><%= patient.status %></td>
